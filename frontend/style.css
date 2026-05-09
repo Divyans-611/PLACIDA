@@ -700,8 +700,17 @@ footer {
 
 /* ── Responsive ── */
 @media (max-width: 640px) {
-  .navbar { padding: 18px 20px; }
-  .nav-links { display: none; }
+  .navbar { padding: 14px 16px; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .nav-links { 
+    display: flex; 
+    width: 100%; 
+    overflow-x: auto; 
+    padding-bottom: 6px; 
+    gap: 16px; 
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
   .hero { padding: 48px 20px 28px; }
   .main-grid { padding: 20px 16px 56px; }
   .dashboard-header { padding: 36px 20px 0; }
