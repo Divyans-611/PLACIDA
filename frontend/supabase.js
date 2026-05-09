@@ -39,11 +39,16 @@ async function getSession() { return window.supabase?.auth.getSession(); }
 async function getUser() { return window.supabase?.auth.getUser(); }
 async function signOut() { await window.supabase?.auth.signOut(); window.location.href = 'auth.html'; }
 
-/* ─── Auth guard: call on every protected page ─── */
+/* ── Auth guard: call on every protected page ── */
 function requireAuth() {
   withSupabase(async (sb) => {
-    if (!sb) return;                     // offline / SDK failed → allow access
-    const { data: { session } } = await sb.auth.getSession();
-    if (!session) window.location.href = 'auth.html';
+    if (!sb) return;  // offline / SDK failed → allow access
+    try {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) window.location.href = 'auth.html';
+    } catch (e) {
+      // Network error (Supabase paused/unreachable) → allow access in offline mode
+      console.warn('[Placida] Auth check failed — running offline:', e.message);
+    }
   });
 }

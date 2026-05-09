@@ -354,10 +354,15 @@
       const password = document.getElementById('siPassword').value;
       if (!email || !password) { showError('Please fill in both fields.'); return; }
       setLoading('siBtn', true, 'Sign In →');
-      const { error } = await window.supabase.auth.signInWithPassword({ email, password });
-      setLoading('siBtn', false, 'Sign In →');
-      if (error) { showError(error.message); return; }
-      window.location.href = 'index.html';
+      try {
+        const { error } = await window.supabase.auth.signInWithPassword({ email, password });
+        setLoading('siBtn', false, 'Sign In →');
+        if (error) { showError(error.message); return; }
+        window.location.href = 'index.html';
+      } catch (e) {
+        setLoading('siBtn', false, 'Sign In →');
+        showError('⚠️ Cannot reach the server right now. Try again in a moment, or use "Skip for now →" to continue offline.');
+      }
     }
 
     /* ── Sign Up ── */
