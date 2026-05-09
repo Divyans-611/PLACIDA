@@ -302,6 +302,26 @@
     </div>
   </div>
 
+  <!-- ── Onboarding Modal (first visit) — Sahil Week 3/4 ── -->
+  <div id="onboardModal" class="onboard-modal" role="dialog" aria-modal="true" aria-labelledby="obTitle" style="display:none">
+    <div class="onboard-dialog">
+      <div class="ob-header">
+        <div class="ob-logo">🧠</div>
+        <h2 id="obTitle">Welcome to Placida</h2>
+        <p>Your personal mental wellness companion. Here's what you can do:</p>
+      </div>
+      <div class="ob-features">
+        <div class="ob-feat"><span>🌙</span><div><strong>Log Your Mood</strong><br><small>Track how you feel every day with emoji + notes</small></div></div>
+        <div class="ob-feat"><span>📊</span><div><strong>View Insights</strong><br><small>7-day charts, streaks and mood patterns</small></div></div>
+        <div class="ob-feat"><span>🌬️</span><div><strong>Breathe</strong><br><small>Guided breathing sessions to calm your mind</small></div></div>
+        <div class="ob-feat"><span>💬</span><div><strong>Chat with AI</strong><br><small>Talk to Placida AI — judgment-free, always here</small></div></div>
+        <div class="ob-feat"><span>🌿</span><div><strong>Relax</strong><br><small>Stress-relief games and calming activities</small></div></div>
+      </div>
+      <button class="btn-primary" onclick="closeOnboard()" style="width:100%;margin-top:8px" id="obStartBtn">Let's Begin 🌿</button>
+      <p class="ob-note">All data stays on your device — nothing is shared.</p>
+    </div>
+  </div>
+
   <script src="supabase.js"></script>
   <script>document.addEventListener('supabase:ready', () => { if(window.supabase) requireAuth(); });</script>
   <script src="script.js"></script>
@@ -310,6 +330,18 @@
     function closeSOS() { document.getElementById('sosModal').classList.remove('show'); document.body.style.overflow=''; }
     document.getElementById('sosModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeSOS(); });
     document.addEventListener('keydown', e => { if(e.key==='Escape') closeSOS(); });
+    // Onboarding
+    function closeOnboard(){
+      document.getElementById('onboardModal').style.display='none';
+      document.body.style.overflow='';
+      localStorage.setItem('placida_welcomed','1');
+    }
+    if(!localStorage.getItem('placida_welcomed')){
+      const m=document.getElementById('onboardModal');
+      m.style.display='flex';
+      document.body.style.overflow='hidden';
+      m.addEventListener('click',e=>{if(e.target===m)closeOnboard();});
+    }
   </script>
 
 </body>
