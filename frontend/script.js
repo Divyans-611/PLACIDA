@@ -561,4 +561,34 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
+  // PWA Installation Button Logic
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // Add "Install App" button to navbar dynamically
+    if (!document.getElementById('pwaInstallBtn')) {
+      const nav = document.querySelector('.nav-links');
+      if (nav) {
+        const li = document.createElement('li');
+        li.innerHTML = '<button id="pwaInstallBtn" class="btn-primary" style="padding: 6px 14px; font-size: 0.85rem; border-radius: 8px; margin-left: 10px;">📲 Install App</button>';
+        nav.appendChild(li);
+        
+        document.getElementById('pwaInstallBtn').addEventListener('click', async () => {
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User response to install prompt: ${outcome}`);
+            if (outcome === 'accepted') {
+              li.remove();
+            }
+            deferredPrompt = null;
+          }
+        });
+      }
+    }
+  });
+
 });

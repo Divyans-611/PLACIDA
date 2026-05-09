@@ -396,10 +396,19 @@
     /* ── Google OAuth ── */
     async function handleGoogle() {
       if (!window.supabase) { showError('Supabase not configured yet.'); return; }
-      await window.supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: 'https://bugbitcoder.github.io/PLACIDA/index.html' }
-      });
+      try {
+        const redirectUrl = window.location.origin.includes('github.io') 
+          ? 'https://bugbitcoder.github.io/PLACIDA/index.html'
+          : window.location.origin + '/index.html'; // For local testing
+          
+        const { error } = await window.supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: { redirectTo: redirectUrl }
+        });
+        if (error) showError(error.message);
+      } catch (e) {
+        showError('⚠️ Google Sign-In failed. (Did you enable the Google Provider in your Supabase Dashboard?)');
+      }
     }
   </script>
 </body>
