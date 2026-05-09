@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Placida Dashboard — View your mood history, weekly trends, and mental wellness insights." />
+  <!-- OG / Social Sharing (Week 3) -->
+  <meta property="og:title" content="Dashboard — Placida" />
+  <meta property="og:description" content="View your 7-day mood trend, streak, and full emotional wellness history." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bugbitcoder.github.io/PLACIDA/dashboard.html" />
+  <meta property="og:site_name" content="Placida" />
+  <title>Dashboard — Placida</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-512.png" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Week 2: Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo" aria-label="Placida home">
+      <div class="logo-icon" aria-hidden="true">🧠</div>
+      <span class="logo-text">Placida</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html" class="active" aria-current="page">Dashboard</a></li>
+      <li><a href="breathe.html">Breathe</a></li>
+      <li><a href="chatbot.html">Chat</a></li>
+      <li><a href="insights.html">Insights</a></li>
+      <li><a href="relax.html">Relax</a></li>
+      <li><a href="feedback.html">Feedback</a></li>
+    </ul>
+    <button class="btn-logout" onclick="signOut()" aria-label="Logout" title="Sign out">⏻ Logout</button>
+  </nav>
+
+  <!-- ── Page Wrapper ── -->
+  <main class="page-wrapper">
+
+    <!-- ── Dashboard Header (Week 2: time-aware greeting + streak) ── -->
+    <header class="dashboard-header" aria-label="Dashboard header">
+      <h1 class="greeting" id="dashGreeting">
+        Hi, <span>Sahil</span> 👋
+      </h1>
+      <p class="greeting-sub" id="dashGreetingSub">Here's a snapshot of your emotional wellness journey.</p>
+    </header>
+
+    <!-- ── Dashboard Grid ── -->
+    <section class="dashboard-grid" aria-label="Mood statistics and history">
+
+      <!-- Stat: Total Entries -->
+      <div class="stat-card glass-card" aria-label="Total mood entries">
+        <div class="stat-label">Total Entries</div>
+        <div class="stat-value stat-accent" id="statTotal">0</div>
+        <div class="stat-sub">moods logged</div>
+      </div>
+
+      <!-- Stat: This Week -->
+      <div class="stat-card glass-card" aria-label="Moods this week">
+        <div class="stat-label">This Week</div>
+        <div class="stat-value stat-accent" id="statWeek">0</div>
+        <div class="stat-sub">in the last 7 days</div>
+      </div>
+
+      <!-- Stat: Avg Score -->
+      <div class="stat-card glass-card" aria-label="Average mood score">
+        <div class="stat-label">Weekly Avg</div>
+        <div class="stat-value" id="statAvg" style="color:var(--accent-teal)">—</div>
+        <div class="stat-sub">out of 5.0</div>
+      </div>
+
+      <!-- Stat: Trend -->
+      <div class="stat-card glass-card" aria-label="Mood trend">
+        <div class="stat-label">Trend</div>
+        <div class="stat-value" id="statTrend" style="font-size:1.1rem; padding-top:6px; color:var(--text-soft)">—</div>
+        <div class="stat-sub">weekly pattern</div>
+      </div>
+
+      <!-- ── Week 2: 7-Day Mood Chart ── -->
+      <div class="glass-card col-span-2" aria-label="7-day mood trend chart">
+        <div class="card-header">
+          <div class="card-icon purple" aria-hidden="true">📊</div>
+          <div>
+            <div class="card-title">7-Day Mood Trend</div>
+            <div class="card-subtitle">Your average mood score for each day this week</div>
+          </div>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="moodChart" aria-label="Mood trend bar chart" role="img"></canvas>
+          <div id="chartEmptyMsg" class="chart-empty">
+            <div>📭</div>
+            <p>No data yet — log some moods to see your trend!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mood History — full width -->
+      <div class="glass-card col-span-2" aria-label="Mood history">
+        <div class="card-header">
+          <div class="card-icon teal" aria-hidden="true">📋</div>
+          <div style="flex:1">
+            <div class="card-title">Mood History</div>
+            <div class="card-subtitle">Your last 10 entries</div>
+          </div>
+          <!-- Week 2: Clear All Data button -->
+          <button id="clearDataBtn" class="btn-clear" onclick="clearAllData()" aria-label="Clear all mood data">
+            🗑️ Clear All
+          </button>
+        </div>
+        <div class="mood-history-list" id="moodHistory" aria-live="polite">
+          <!-- Populated by script.js -->
+        </div>
+      </div>
+
+      <!-- Quick Actions — full width -->
+      <div class="glass-card col-span-2" aria-label="Wellness tools">
+        <div class="card-header">
+          <div class="card-icon purple" aria-hidden="true">⚡</div>
+          <div>
+            <div class="card-title">Wellness Tools</div>
+            <div class="card-subtitle">Quick access to all your self-care features</div>
+          </div>
+        </div>
+        <div class="quick-actions">
+          <a href="index.html" id="logMoodBtn" class="action-card" aria-label="Log a new mood">
+            <div class="action-icon">🌙</div>
+            <div class="action-title">Log Mood</div>
+            <div class="action-desc">Add today's entry</div>
+          </a>
+          <a href="breathe.html" id="breatheQuickBtn" class="action-card" aria-label="Breathing exercise">
+            <div class="action-icon">🌬️</div>
+            <div class="action-title">Breathe</div>
+            <div class="action-desc">4-7-8 technique</div>
+          </a>
+          <a href="chatbot.html" id="chatQuickBtn" class="action-card" aria-label="Chat with Placida">
+            <div class="action-icon">💬</div>
+            <div class="action-title">Chat</div>
+            <div class="action-desc">AI companion</div>
+          </a>
+          <a href="summary.html" id="journalQuickBtn" class="action-card" aria-label="Journaling prompts">
+            <div class="action-icon">📓</div>
+            <div class="action-title">Journal</div>
+            <div class="action-desc">Weekly summary</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Crisis Banner — full width -->
+      <div class="col-span-2" style="margin-top:-8px;"></div>
+
+    </section>
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <p class="footer-brand">
+      Made with 💜 by <strong>Sahil</strong> &amp; Team · © 2026 Placida
+    </p>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="breathe.html">Breathe</a></li>
+      <li><a href="chatbot.html">Chat</a></li>
+    </ul>
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Week 3: Keyboard Shortcut Hint -->
+  <div id="shortcutHint" class="shortcut-hint" title="Keyboard Shortcuts" aria-label="Show keyboard shortcuts">?</div>
+  <div id="shortcutPanel" class="shortcut-panel" aria-hidden="true">
+    <div class="sp-title">⌨️ Shortcuts</div>
+    <div class="sp-row"><kbd>M</kbd><span>Log Mood</span></div>
+    <div class="sp-row"><kbd>B</kbd><span>Breathe</span></div>
+    <div class="sp-row"><kbd>C</kbd><span>Chat</span></div>
+    <div class="sp-row"><kbd>D</kbd><span>Dashboard</span></div>
+    <div class="sp-row"><kbd>I</kbd><span>Insights</span></div>
+    <div class="sp-row"><kbd>S</kbd><span>Summary</span></div>
+  </div>
+
+  <!-- ── Week 2: Confirm Clear Modal ── -->
+  <div id="confirmModal" class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="confirm-dialog">
+      <div class="confirm-icon">🗑️</div>
+      <h2 id="modalTitle">Clear All Data?</h2>
+      <p>This will permanently delete all your logged moods and chat history. This action cannot be undone.</p>
+      <div class="confirm-actions">
+        <button class="confirm-btn-cancel" onclick="cancelClear()">Cancel</button>
+        <button class="confirm-btn-confirm" onclick="confirmClear()">Yes, Clear Everything</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOS Floating Button -->
+  <button class="sos-float-btn" onclick="openSOS()" aria-label="Open mental health helplines" id="sosFloatBtn">
+    <span class="sos-icon">🆘</span> Need Help?
+  </button>
+
+  <!-- SOS Modal -->
+  <div class="sos-modal" id="sosModal" role="dialog" aria-modal="true" aria-labelledby="sosModalTitle">
+    <div class="sos-dialog">
+      <button class="sos-close-btn" onclick="closeSOS()" aria-label="Close">✕</button>
+      <div class="sos-dialog-header">
+        <div class="sos-dialog-icon">🆘</div>
+        <div>
+          <div class="sos-dialog-title" id="sosModalTitle">You are not alone.</div>
+          <div class="sos-dialog-subtitle">Free, confidential mental health support — available right now.</div>
+        </div>
+      </div>
+      <div class="sos-section-label">🏛️ Government Helplines — Free &amp; Official</div>
+      <a href="tel:18005990019" class="sos-helpline priority"><div class="sos-helpline-emoji">📞</div><div class="sos-helpline-info"><div class="sos-helpline-name">KIRAN Mental Health Helpline <span class="sos-priority-badge">Govt. of India</span></div><div class="sos-helpline-org">Ministry of Social Justice &amp; Empowerment</div><div class="sos-tags"><span class="sos-tag">Toll-Free</span><span class="sos-tag">24/7</span><span class="sos-tag">13 Languages</span></div></div><div class="sos-helpline-number">1800-599-0019</div></a>
+      <a href="tel:08046110007" class="sos-helpline priority"><div class="sos-helpline-emoji">🏥</div><div class="sos-helpline-info"><div class="sos-helpline-name">NIMHANS Helpline <span class="sos-priority-badge">Govt. of India</span></div><div class="sos-helpline-org">Nat. Institute of Mental Health &amp; Neuro Sciences</div><div class="sos-tags"><span class="sos-tag">Free</span><span class="sos-tag">Expert Support</span></div></div><div class="sos-helpline-number">080-4611-0007</div></a>
+      <a href="tel:14416" class="sos-helpline priority"><div class="sos-helpline-emoji">🧠</div><div class="sos-helpline-info"><div class="sos-helpline-name">SNEHI Short Code <span class="sos-priority-badge">Govt.</span></div><div class="sos-helpline-org">National Mental Health Programme, India</div><div class="sos-tags"><span class="sos-tag">Toll-Free</span><span class="sos-tag">Short Code</span></div></div><div class="sos-helpline-number">14416</div></a>
+      <div class="sos-section-label">🎓 Academic &amp; Research</div>
+      <a href="tel:9152987821" class="sos-helpline"><div class="sos-helpline-emoji">📱</div><div class="sos-helpline-info"><div class="sos-helpline-name">iCall — TISS</div><div class="sos-helpline-org">Tata Institute of Social Sciences, Mumbai</div><div class="sos-tags"><span class="sos-tag">Mon–Sat</span><span class="sos-tag">8am–10pm</span></div></div><div class="sos-helpline-number">9152987821</div></a>
+      <div class="sos-section-label">🌙 24×7 Crisis Lines</div>
+      <a href="tel:9820466627" class="sos-helpline"><div class="sos-helpline-emoji">🕯️</div><div class="sos-helpline-info"><div class="sos-helpline-name">AASRA</div><div class="sos-helpline-org">Suicide prevention &amp; crisis intervention</div><div class="sos-tags"><span class="sos-tag">24/7</span><span class="sos-tag">All India</span></div></div><div class="sos-helpline-number">9820466627</div></a>
+      <a href="tel:18602662345" class="sos-helpline"><div class="sos-helpline-emoji">💙</div><div class="sos-helpline-info"><div class="sos-helpline-name">Vandrevala Foundation</div><div class="sos-helpline-org">Mental health helpline for all ages</div><div class="sos-tags"><span class="sos-tag">24/7</span><span class="sos-tag">Confidential</span></div></div><div class="sos-helpline-number">1860-2662-345</div></a>
+      <a href="tel:04424640050" class="sos-helpline"><div class="sos-helpline-emoji">🤝</div><div class="sos-helpline-info"><div class="sos-helpline-name">Snehi</div><div class="sos-helpline-org">Emotional support, Chennai</div><div class="sos-tags"><span class="sos-tag">Mon–Sat 8am–10pm</span></div></div><div class="sos-helpline-number">044-24640050</div></a>
+      <a href="tel:01123389090" class="sos-helpline"><div class="sos-helpline-emoji">☀️</div><div class="sos-helpline-info"><div class="sos-helpline-name">Sumaitri</div><div class="sos-helpline-org">Emotional support helpline, Delhi</div><div class="sos-tags"><span class="sos-tag">Daily 2pm–10pm</span></div></div><div class="sos-helpline-number">011-23389090</div></a>
+      <p class="sos-modal-note">All calls are free and confidential. In immediate danger, call <strong>112</strong>.</p>
+    </div>
+  </div>
+
+  <script src="supabase.js"></script>
+  <script>document.addEventListener('supabase:ready', () => { if(window.supabase) requireAuth(); });</script>
+  <script src="script.js"></script>
+  <script>
+    function openSOS()  { document.getElementById('sosModal').classList.add('show'); document.body.style.overflow='hidden'; }
+    function closeSOS() { document.getElementById('sosModal').classList.remove('show'); document.body.style.overflow=''; }
+    document.getElementById('sosModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeSOS(); });
+    document.addEventListener('keydown', e => { if(e.key==='Escape') closeSOS(); });
+  </script>
+
+</body>
+
+</html>

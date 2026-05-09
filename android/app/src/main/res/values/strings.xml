@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Placida</string>
+    <string name="title_activity_main">Placida</string>
+    <string name="package_name">com.placida.app</string>
+    <string name="custom_url_scheme">com.placida.app</string>
+</resources>

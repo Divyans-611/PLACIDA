@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Placida Chat — Talk to your AI mental wellness companion anytime, privately and without judgment." />
+  <!-- OG / Social Sharing (Week 3) -->
+  <meta property="og:title" content="Chat — Placida" />
+  <meta property="og:description" content="Talk to Placida AI — your private, judgment-free mental wellness companion." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bugbitcoder.github.io/PLACIDA/chatbot.html" />
+  <meta property="og:site_name" content="Placida" />
+  <title>Chat — Placida</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-512.png" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <style>
+    /* ── Chat Page ── */
+    .chat-page {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      max-width: 680px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 28px 20px 0;
+      animation: fadeInUp 0.6s ease both;
+    }
+
+    .chat-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .chat-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-teal));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 0 20px var(--accent-glow);
+      flex-shrink: 0;
+    }
+
+    .chat-header-info .chat-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .chat-header-info .chat-status {
+      font-size: 0.78rem;
+      color: var(--accent-teal);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--accent-teal);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+      display: inline-block;
+    }
+
+    /* ── Chat Window ── */
+    .chat-window {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px 20px 0 0;
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 380px;
+      max-height: 420px;
+      backdrop-filter: blur(16px);
+      scroll-behavior: smooth;
+    }
+
+    /* ── Chat Messages ── */
+    .chat-msg {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-width: 80%;
+      animation: fadeInUp 0.3s ease both;
+    }
+
+    .chat-msg.user {
+      align-self: flex-end;
+      align-items: flex-end;
+    }
+
+    .chat-msg.bot {
+      align-self: flex-start;
+      align-items: flex-start;
+    }
+
+    .bubble {
+      padding: 12px 18px;
+      border-radius: 18px;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      word-break: break-word;
+    }
+
+    .chat-msg.user .bubble {
+      background: linear-gradient(135deg, var(--accent-purple), #9b6af7);
+      color: #fff;
+      border-radius: 18px 18px 4px 18px;
+    }
+
+    .chat-msg.bot .bubble {
+      background: rgba(255,255,255,0.07);
+      color: var(--text-primary);
+      border: 1px solid var(--border-glass);
+      border-radius: 18px 18px 18px 4px;
+    }
+
+    .msg-time {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      padding: 0 4px;
+    }
+
+    /* ── Typing Indicator ── */
+    .typing-indicator .bubble {
+      padding: 14px 20px;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .typing-indicator .bubble span {
+      width: 7px;
+      height: 7px;
+      background: var(--text-muted);
+      border-radius: 50%;
+      display: inline-block;
+      animation: bounce 1.2s ease infinite;
+    }
+
+    .typing-indicator .bubble span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator .bubble span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: translateY(0); }
+      40%           { transform: translateY(-7px); }
+    }
+
+    /* ── Chat Input Area ── */
+    .chat-input-area {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-glass);
+      border-top: none;
+      border-radius: 0 0 20px 20px;
+      padding: 16px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+      backdrop-filter: blur(16px);
+    }
+
+    #chatInput {
+      flex: 1;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border-glass);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      outline: none;
+      resize: none;
+      max-height: 100px;
+      transition: border-color 0.3s ease;
+      line-height: 1.5;
+    }
+
+    #chatInput::placeholder { color: var(--text-muted); }
+    #chatInput:focus { border-color: var(--accent-purple); }
+
+    #chatSendBtn {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent-purple), #9b6af7);
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    #chatSendBtn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 4px 16px rgba(124,106,247,0.4);
+    }
+
+    /* ── Quick prompts ── */
+    .quick-prompts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 16px 0 24px;
+    }
+
+    .qp-btn {
+      background: rgba(124,106,247,0.1);
+      border: 1px solid rgba(124,106,247,0.25);
+      border-radius: 100px;
+      padding: 7px 16px;
+      font-size: 0.8rem;
+      color: #a89df9;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.25s ease;
+    }
+
+    .qp-btn:hover {
+      background: rgba(124,106,247,0.22);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* ── Disclaimer ── */
+    .chat-disclaimer {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 14px 0 32px;
+      line-height: 1.6;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo" aria-label="Placida home">
+      <div class="logo-icon" aria-hidden="true">🧠</div>
+      <span class="logo-text">Placida</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="breathe.html">Breathe</a></li>
+      <li><a href="chatbot.html" class="active" aria-current="page">Chat</a></li>
+      <li><a href="insights.html">Insights</a></li>
+      <li><a href="relax.html">Relax</a></li>
+      <li><a href="feedback.html">Feedback</a></li>
+    </ul>
+    <button class="btn-logout" onclick="signOut()" aria-label="Logout" title="Sign out">⏻ Logout</button>
+  </nav>
+
+  <main class="page-wrapper" style="padding-bottom: 40px;">
+    <div class="chat-page">
+
+      <!-- Chat Header -->
+      <div class="chat-header">
+        <div class="chat-avatar" aria-hidden="true">🧠</div>
+        <div class="chat-header-info">
+          <div class="chat-name">Placida AI</div>
+          <div class="chat-status">
+            <span class="status-dot"></span> Online · Always here for you
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Window -->
+      <div class="chat-window" id="chatMessages" role="log" aria-label="Chat messages" aria-live="polite">
+        <!-- Messages injected by features.js -->
+      </div>
+
+      <!-- Input Area -->
+      <div class="chat-input-area">
+        <textarea
+          id="chatInput"
+          placeholder="How are you feeling today…"
+          rows="1"
+          aria-label="Type your message"
+        ></textarea>
+        <button id="chatSendBtn" aria-label="Send message">➤</button>
+      </div>
+
+      <!-- Quick Prompts -->
+      <div class="quick-prompts" aria-label="Quick message suggestions">
+        <button class="qp-btn" onclick="quickPrompt('I feel anxious')">😟 I feel anxious</button>
+        <button class="qp-btn" onclick="quickPrompt('I am really stressed')">😓 I\'m stressed</button>
+        <button class="qp-btn" onclick="quickPrompt('I feel happy today')">😊 I\'m happy</button>
+        <button class="qp-btn" onclick="quickPrompt('I feel lonely')">💙 I feel lonely</button>
+        <button class="qp-btn" onclick="quickPrompt('I need help')">🆘 I need help</button>
+      </div>
+
+      <!-- Disclaimer -->
+      <p class="chat-disclaimer">
+        💜 Placida is an AI companion, not a substitute for professional mental health care.<br>
+        In crisis? Click the <strong>🆘 Need Help?</strong> button (bottom-left) for free government helplines.
+      </p>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p class="footer-brand">Made with 💜 by <strong>Sahil, Ayushi, Sanchari &amp; Divyans</strong> · © 2026 Placida</p>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="breathe.html">Breathe</a></li>
+      <li><a href="summary.html">Summary</a></li>
+    </ul>
+  </footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Week 3: Keyboard Shortcut Hint -->
+  <div id="shortcutHint" class="shortcut-hint" title="Keyboard Shortcuts" aria-label="Show keyboard shortcuts">?</div>
+  <div id="shortcutPanel" class="shortcut-panel" aria-hidden="true">
+    <div class="sp-title">⌨️ Shortcuts</div>
+    <div class="sp-row"><kbd>M</kbd><span>Log Mood</span></div>
+    <div class="sp-row"><kbd>B</kbd><span>Breathe</span></div>
+    <div class="sp-row"><kbd>C</kbd><span>Chat</span></div>
+    <div class="sp-row"><kbd>D</kbd><span>Dashboard</span></div>
+    <div class="sp-row"><kbd>I</kbd><span>Insights</span></div>
+    <div class="sp-row"><kbd>S</kbd><span>Summary</span></div>
+  </div>
+
+  <!-- SOS Floating Button -->
+  <button class="sos-float-btn" onclick="openSOS()" aria-label="Open mental health helplines" id="sosFloatBtn">
+    <span class="sos-icon">🆘</span> Need Help?
+  </button>
+  <!-- SOS Modal -->
+  <div class="sos-modal" id="sosModal" role="dialog" aria-modal="true" aria-labelledby="sosModalTitle">
+    <div class="sos-dialog">
+      <button class="sos-close-btn" onclick="closeSOS()" aria-label="Close">✕</button>
+      <div class="sos-dialog-header"><div class="sos-dialog-icon">🆘</div><div><div class="sos-dialog-title" id="sosModalTitle">You are not alone.</div><div class="sos-dialog-subtitle">Free, confidential mental health support — right now.</div></div></div>
+      <div class="sos-section-label">🏛️ Government Helplines — Free &amp; Official</div>
+      <a href="tel:18005990019" class="sos-helpline priority"><div class="sos-helpline-emoji">📞</div><div class="sos-helpline-info"><div class="sos-helpline-name">KIRAN <span class="sos-priority-badge">Govt. of India</span></div><div class="sos-helpline-org">Ministry of Social Justice &amp; Empowerment</div><div class="sos-tags"><span class="sos-tag">Toll-Free</span><span class="sos-tag">24/7</span><span class="sos-tag">13 Languages</span></div></div><div class="sos-helpline-number">1800-599-0019</div></a>
+      <a href="tel:08046110007" class="sos-helpline priority"><div class="sos-helpline-emoji">🏥</div><div class="sos-helpline-info"><div class="sos-helpline-name">NIMHANS <span class="sos-priority-badge">Govt. of India</span></div><div class="sos-helpline-org">Nat. Institute of Mental Health &amp; Neuro Sciences</div><div class="sos-tags"><span class="sos-tag">Free</span><span class="sos-tag">Expert Support</span></div></div><div class="sos-helpline-number">080-4611-0007</div></a>
+      <a href="tel:14416" class="sos-helpline priority"><div class="sos-helpline-emoji">🧠</div><div class="sos-helpline-info"><div class="sos-helpline-name">SNEHI Short Code <span class="sos-priority-badge">Govt.</span></div><div class="sos-helpline-org">National Mental Health Programme</div><div class="sos-tags"><span class="sos-tag">Toll-Free</span></div></div><div class="sos-helpline-number">14416</div></a>
+      <div class="sos-section-label">🎓 Academic</div>
+      <a href="tel:9152987821" class="sos-helpline"><div class="sos-helpline-emoji">📱</div><div class="sos-helpline-info"><div class="sos-helpline-name">iCall — TISS</div><div class="sos-helpline-org">Tata Institute of Social Sciences</div><div class="sos-tags"><span class="sos-tag">Mon–Sat 8am–10pm</span></div></div><div class="sos-helpline-number">9152987821</div></a>
+      <div class="sos-section-label">🌙 24×7 Crisis Lines</div>
+      <a href="tel:9820466627" class="sos-helpline"><div class="sos-helpline-emoji">🕯️</div><div class="sos-helpline-info"><div class="sos-helpline-name">AASRA</div><div class="sos-helpline-org">Suicide prevention &amp; crisis intervention</div><div class="sos-tags"><span class="sos-tag">24/7</span></div></div><div class="sos-helpline-number">9820466627</div></a>
+      <a href="tel:18602662345" class="sos-helpline"><div class="sos-helpline-emoji">💙</div><div class="sos-helpline-info"><div class="sos-helpline-name">Vandrevala Foundation</div><div class="sos-helpline-org">Mental health helpline, all ages</div><div class="sos-tags"><span class="sos-tag">24/7</span><span class="sos-tag">Confidential</span></div></div><div class="sos-helpline-number">1860-2662-345</div></a>
+      <a href="tel:04424640050" class="sos-helpline"><div class="sos-helpline-emoji">🤝</div><div class="sos-helpline-info"><div class="sos-helpline-name">Snehi</div><div class="sos-helpline-org">Emotional support, Chennai</div><div class="sos-tags"><span class="sos-tag">Mon–Sat 8am–10pm</span></div></div><div class="sos-helpline-number">044-24640050</div></a>
+      <a href="tel:01123389090" class="sos-helpline"><div class="sos-helpline-emoji">☀️</div><div class="sos-helpline-info"><div class="sos-helpline-name">Sumaitri</div><div class="sos-helpline-org">Emotional support, Delhi</div><div class="sos-tags"><span class="sos-tag">Daily 2pm–10pm</span></div></div><div class="sos-helpline-number">011-23389090</div></a>
+      <p class="sos-modal-note">All calls are free and confidential. In immediate danger, call <strong>112</strong>.</p>
+    </div>
+  </div>
+  <script src="supabase.js"></script>
+  <script src="features.js"></script>
+  <script>
+    function quickPrompt(text) {
+      const input = document.getElementById('chatInput');
+      if (input) { input.value = text; input.focus(); }
+      sendMessage();
+    }
+    function openSOS()  { document.getElementById('sosModal').classList.add('show'); document.body.style.overflow='hidden'; }
+    function closeSOS() { document.getElementById('sosModal').classList.remove('show'); document.body.style.overflow=''; }
+    document.getElementById('sosModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeSOS(); });
+    document.addEventListener('keydown', e => { if(e.key==='Escape') closeSOS(); });
+  </script>
+</body>
+</html>
+

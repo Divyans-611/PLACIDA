@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sign in or create your free Placida account — your private mental wellness companion." />
+  <meta property="og:title" content="Sign In — Placida" />
+  <meta property="og:description" content="Join Placida — private, offline-first mental wellness. No ads, no tracking." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#7c6af7" />
+  <title>Sign In — Placida</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-512.png" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="supabase.js"></script>
+
+  <style>
+    /* ── Auth page specific styles ── */
+    .auth-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* floating orbs */
+    .auth-page::before, .auth-page::after {
+      content: '';
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.18;
+      pointer-events: none;
+    }
+    .auth-page::before {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, #7c6af7, transparent);
+      top: -120px; left: -120px;
+      animation: floatOrb 9s ease-in-out infinite;
+    }
+    .auth-page::after {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #5ec4b6, transparent);
+      bottom: -100px; right: -100px;
+      animation: floatOrb 12s ease-in-out infinite reverse;
+    }
+
+    .auth-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+      z-index: 1;
+      animation: fadeInUp 0.5s ease both;
+    }
+
+    .auth-logo {
+      text-align: center;
+      font-size: 2.8rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .auth-brand {
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a89df9, #5ec4b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.3rem;
+    }
+
+    .auth-tagline {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-bottom: 2rem;
+    }
+
+    /* tab switcher */
+    .auth-tabs {
+      display: flex;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-glass);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 1.8rem;
+      gap: 4px;
+    }
+    .auth-tab {
+      flex: 1;
+      padding: 0.55rem;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      font-family: inherit;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .auth-tab.active {
+      background: var(--accent-purple);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(124,106,247,0.35);
+    }
+
+    /* form */
+    .auth-form { display: flex; flex-direction: column; gap: 1rem; }
+
+    .auth-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .auth-field label {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-soft);
+      letter-spacing: 0.02em;
+    }
+    .auth-field input {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border-glass);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .auth-field input:focus {
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 0 3px rgba(124,106,247,0.15);
+    }
+    .auth-field input::placeholder { color: var(--text-muted); }
+
+    .auth-submit {
+      margin-top: 0.4rem;
+      width: 100%;
+      padding: 0.85rem;
+      background: linear-gradient(135deg, #7c6af7, #5ec4b6);
+      border: none;
+      border-radius: 14px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s;
+      box-shadow: 0 6px 20px rgba(124,106,247,0.35);
+    }
+    .auth-submit:hover  { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(124,106,247,0.45); }
+    .auth-submit:active { transform: translateY(0);   }
+    .auth-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .auth-error {
+      background: rgba(240,107,139,0.12);
+      border: 1px solid rgba(240,107,139,0.25);
+      border-radius: 10px;
+      padding: 0.7rem 1rem;
+      color: #f06b8b;
+      font-size: 0.86rem;
+      display: none;
+    }
+    .auth-error.show { display: block; animation: fadeInUp 0.2s ease; }
+
+    .auth-success {
+      background: rgba(94,196,182,0.12);
+      border: 1px solid rgba(94,196,182,0.25);
+      border-radius: 10px;
+      padding: 0.7rem 1rem;
+      color: #5ec4b6;
+      font-size: 0.86rem;
+      display: none;
+    }
+    .auth-success.show { display: block; animation: fadeInUp 0.2s ease; }
+
+    .auth-divider {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin: 0.5rem 0;
+      position: relative;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background: var(--border-glass);
+    }
+    .auth-divider::before { left: 0; }
+    .auth-divider::after  { right: 0; }
+
+    .auth-google {
+      width: 100%;
+      padding: 0.75rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border-glass);
+      border-radius: 14px;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .auth-google:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.2); }
+
+    .auth-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+    }
+    .auth-footer a { color: var(--accent-purple); text-decoration: none; }
+
+    .spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+
+<body>
+  <main class="auth-page" id="main">
+
+    <div class="auth-card" role="main">
+      <div class="auth-logo">🌿</div>
+      <div class="auth-brand">Placida</div>
+      <p class="auth-tagline">Your private mental wellness companion</p>
+
+      <!-- Tab switcher -->
+      <div class="auth-tabs" role="tablist">
+        <button class="auth-tab active" id="tabSignIn" role="tab" aria-selected="true"
+          onclick="switchTab('signin')">Sign In</button>
+        <button class="auth-tab" id="tabSignUp" role="tab" aria-selected="false"
+          onclick="switchTab('signup')">Create Account</button>
+      </div>
+
+      <!-- Error / Success banners -->
+      <div class="auth-error" id="authError" role="alert"></div>
+      <div class="auth-success" id="authSuccess" role="status"></div>
+
+      <!-- ── SIGN IN FORM ── -->
+      <form class="auth-form" id="signinForm" onsubmit="handleSignIn(event)" novalidate>
+        <div class="auth-field">
+          <label for="siEmail">Email address</label>
+          <input type="email" id="siEmail" placeholder="you@example.com" autocomplete="email" required />
+        </div>
+        <div class="auth-field">
+          <label for="siPassword">Password</label>
+          <input type="password" id="siPassword" placeholder="Your password" autocomplete="current-password" required />
+        </div>
+        <button type="submit" class="auth-submit" id="siBtn">Sign In →</button>
+      </form>
+
+      <!-- ── SIGN UP FORM (hidden by default) ── -->
+      <form class="auth-form" id="signupForm" style="display:none;" onsubmit="handleSignUp(event)" novalidate>
+        <div class="auth-field">
+          <label for="suName">Your name</label>
+          <input type="text" id="suName" placeholder="e.g. Sahil" autocomplete="given-name" required />
+        </div>
+        <div class="auth-field">
+          <label for="suEmail">Email address</label>
+          <input type="email" id="suEmail" placeholder="you@example.com" autocomplete="email" required />
+        </div>
+        <div class="auth-field">
+          <label for="suPassword">Create a password</label>
+          <input type="password" id="suPassword" placeholder="At least 6 characters" autocomplete="new-password" minlength="6" required />
+        </div>
+        <button type="submit" class="auth-submit" id="suBtn">Create Account 🌿</button>
+      </form>
+
+      <div class="auth-divider">or</div>
+
+      <button class="auth-google" onclick="handleGoogle()" aria-label="Continue with Google">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Continue with Google
+      </button>
+
+      <p class="auth-footer">
+        By signing in you agree to keep your data private. &nbsp;
+        <a href="index.html">Skip for now →</a>
+      </p>
+    </div>
+
+  </main>
+
+  <script>
+    /* ── Redirect if already logged in ── */
+    document.addEventListener('supabase:ready', async () => {
+      if (!window.supabase) return;
+      const { data: { session } } = await window.supabase.auth.getSession();
+      if (session) window.location.href = 'index.html';
+    });
+
+    /* ── Tab switch ── */
+    function switchTab(tab) {
+      const isSignIn = tab === 'signin';
+      document.getElementById('signinForm').style.display  = isSignIn ? 'flex' : 'none';
+      document.getElementById('signupForm').style.display  = isSignIn ? 'none' : 'flex';
+      document.getElementById('tabSignIn').classList.toggle('active', isSignIn);
+      document.getElementById('tabSignUp').classList.toggle('active', !isSignIn);
+      clearMessages();
+    }
+
+    function setLoading(btnId, loading, defaultText) {
+      const btn = document.getElementById(btnId);
+      btn.disabled = loading;
+      btn.innerHTML = loading
+        ? `<span class="spinner"></span> Please wait…`
+        : defaultText;
+    }
+
+    function showError(msg)   { const el = document.getElementById('authError');   el.textContent = msg; el.classList.add('show'); }
+    function showSuccess(msg) { const el = document.getElementById('authSuccess'); el.textContent = msg; el.classList.add('show'); }
+    function clearMessages()  {
+      document.getElementById('authError').classList.remove('show');
+      document.getElementById('authSuccess').classList.remove('show');
+    }
+
+    /* ── Sign In ── */
+    async function handleSignIn(e) {
+      e.preventDefault();
+      clearMessages();
+      if (!window.supabase) { showError('Supabase not configured yet. Ask Sahil to add the project keys!'); return; }
+      const email    = document.getElementById('siEmail').value.trim();
+      const password = document.getElementById('siPassword').value;
+      if (!email || !password) { showError('Please fill in both fields.'); return; }
+      setLoading('siBtn', true, 'Sign In →');
+      try {
+        const { error } = await window.supabase.auth.signInWithPassword({ email, password });
+        setLoading('siBtn', false, 'Sign In →');
+        if (error) { showError(error.message); return; }
+        window.location.href = 'index.html';
+      } catch (e) {
+        setLoading('siBtn', false, 'Sign In →');
+        showError('⚠️ Cannot reach the server right now. Try again in a moment, or use "Skip for now →" to continue offline.');
+      }
+    }
+
+    /* ── Sign Up ── */
+    async function handleSignUp(e) {
+      e.preventDefault();
+      clearMessages();
+      if (!window.supabase) { showError('Supabase not configured yet. Ask Sahil to add the project keys!'); return; }
+      const name     = document.getElementById('suName').value.trim();
+      const email    = document.getElementById('suEmail').value.trim();
+      const password = document.getElementById('suPassword').value;
+      if (!name || !email || !password) { showError('Please fill in all fields.'); return; }
+      if (password.length < 6) { showError('Password must be at least 6 characters.'); return; }
+      setLoading('suBtn', true, 'Create Account 🌿');
+      const { data, error } = await window.supabase.auth.signUp({
+        email, password,
+        options: { data: { full_name: name } }
+      });
+      setLoading('suBtn', false, 'Create Account 🌿');
+      if (error) { showError(error.message); return; }
+      // Auto sign-in after signup (works when email confirmation is OFF)
+      if (data?.session) {
+        window.location.href = 'index.html';
+        return;
+      }
+      showSuccess('✅ Account created! Check your email to confirm, then sign in.');
+      switchTab('signin');
+    }
+
+    /* ── Google OAuth ── */
+    async function handleGoogle() {
+      if (!window.supabase) { showError('Supabase not configured yet.'); return; }
+      try {
+        const redirectUrl = window.location.origin.includes('github.io') 
+          ? 'https://bugbitcoder.github.io/PLACIDA/index.html'
+          : window.location.origin + '/index.html'; // For local testing
+          
+        const { error } = await window.supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: { redirectTo: redirectUrl }
+        });
+        if (error) showError(error.message);
+      } catch (e) {
+        showError('⚠️ Google Sign-In failed. (Did you enable the Google Provider in your Supabase Dashboard?)');
+      }
+    }
+  </script>
+</body>
+</html>

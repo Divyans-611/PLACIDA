@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Placida — Your private AI mental wellness companion. Log moods, breathe, and reflect anytime." />
+  <!-- OG / Social Sharing (Week 3) -->
+  <meta property="og:title" content="Placida — AI Mental Wellness Companion" />
+  <meta property="og:description" content="Log moods, breathe, chat, and track your mental wellness — privately, offline." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bugbitcoder.github.io/PLACIDA/" />
+  <meta property="og:site_name" content="Placida" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Placida — AI Mental Wellness Companion" />
+  <meta name="twitter:description" content="Your private mental wellness companion. Log moods, breathe, chat, reflect." />
+  <title>Placida — AI Mental Health Companion</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-512.png" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+</head>
+
+<body>
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo" aria-label="Placida home">
+      <div class="logo-icon" aria-hidden="true">🧠</div>
+      <span class="logo-text">Placida</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active" aria-current="page">Home</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="breathe.html">Breathe</a></li>
+      <li><a href="chatbot.html">Chat</a></li>
+      <li><a href="insights.html">Insights</a></li>
+      <li><a href="relax.html">Relax</a></li>
+      <li><a href="feedback.html">Feedback</a></li>
+    </ul>
+    <button class="btn-logout" onclick="signOut()" aria-label="Logout" title="Sign out">⏻ Logout</button>
+  </nav>
+
+  <!-- ── Page Wrapper ── -->
+  <main class="page-wrapper">
+
+    <!-- ── Hero ── -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-badge" aria-label="Status">
+        <span>✨</span> Your safe space, anytime
+      </div>
+      <h1 id="hero-title">How are you<br>feeling today?</h1>
+      <p>Placida listens without judgment. Log your mood, reflect on your day, and take care of your mind — one moment
+        at a time.</p>
+    </section>
+
+    <!-- ── Main Content ── -->
+    <div class="main-grid">
+
+      <!-- Mood Input Card -->
+      <div class="glass-card" aria-label="Mood logger">
+        <div class="card-header">
+          <div class="card-icon purple" aria-hidden="true">🌙</div>
+          <div>
+            <div class="card-title">Log Your Mood</div>
+            <div class="card-subtitle">Select how you're feeling right now</div>
+          </div>
+        </div>
+
+        <p class="mood-label">Pick your vibe</p>
+
+        <!-- Emoji Picker -->
+        <div class="emoji-grid" role="group" aria-label="Mood selector">
+          <button class="emoji-btn" data-mood="terrible" id="mood-terrible" aria-label="Terrible mood" title="Rough">
+            😔
+            <span class="label">Rough</span>
+          </button>
+          <button class="emoji-btn" data-mood="bad" id="mood-bad" aria-label="Bad mood" title="Low">
+            😟
+            <span class="label">Low</span>
+          </button>
+          <button class="emoji-btn" data-mood="okay" id="mood-okay" aria-label="Okay mood" title="Okay">
+            😐
+            <span class="label">Okay</span>
+          </button>
+          <button class="emoji-btn" data-mood="good" id="mood-good" aria-label="Good mood" title="Good">
+            🙂
+            <span class="label">Good</span>
+          </button>
+          <button class="emoji-btn" data-mood="great" id="mood-great" aria-label="Great mood" title="Great">
+            😊
+            <span class="label">Great</span>
+          </button>
+        </div>
+
+        <!-- Optional Note -->
+        <div class="input-group">
+          <label for="moodNote">Add a note <span style="opacity:.5;">(optional)</span></label>
+          <textarea id="moodNote" rows="3" placeholder="What's on your mind? Even a few words help…"
+            aria-label="Mood note"></textarea>
+        </div>
+
+        <!-- Save Button -->
+        <button id="saveMoodBtn" class="btn-primary" onclick="saveMood()" aria-label="Save mood entry">
+          Save Mood ✦
+        </button>
+      </div>
+
+      <!-- Quick Actions -->
+      <div>
+        <p class="mood-label" style="margin-bottom:14px;">Quick actions</p>
+        <div class="quick-actions">
+          <a href="breathe.html" id="breatheBtn" class="action-card" aria-label="Breathing exercise">
+            <div class="action-icon">🌬️</div>
+            <div class="action-title">Breathe</div>
+            <div class="action-desc">4-7-8 calm breathing</div>
+          </a>
+          <a href="dashboard.html" id="dashboardBtn" class="action-card" aria-label="Go to dashboard">
+            <div class="action-icon">📊</div>
+            <div class="action-title">Dashboard</div>
+            <div class="action-desc">View mood history</div>
+          </a>
+          <a href="summary.html" id="journalBtn" class="action-card" aria-label="Journaling prompts">
+            <div class="action-icon">📓</div>
+            <div class="action-title">Journal</div>
+            <div class="action-desc">Guided prompts</div>
+          </a>
+          <a href="chatbot.html" id="chatBtn" class="action-card" aria-label="Talk to Placida AI">
+            <div class="action-icon">💬</div>
+            <div class="action-title">Chat</div>
+            <div class="action-desc">Talk to Placida AI</div>
+          </a>
+        </div>
+      </div>
+
+
+
+    </div><!-- /main-grid -->
+  </main><!-- /page-wrapper -->
+
+  <!-- ── Footer ── -->
+  <footer>
+    <p class="footer-brand">
+      Made with 💜 by <strong>Sahil</strong> &amp; Team · © 2026 Placida
+    </p>
+    <ul class="footer-links">
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+    </ul>
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Week 3: Onboarding Modal (shown once on first visit) -->
+  <div id="onboardModal" class="onboard-modal" role="dialog" aria-modal="true" aria-labelledby="onboardTitle">
+    <div class="onboard-dialog">
+      <div class="od-logo">🌿</div>
+      <h2 id="onboardTitle">Welcome to Placida!</h2>
+      <p>Your private mental wellness companion. Track moods, breathe, chat — all offline, no account needed.</p>
+      <div class="onboard-features">
+        <div class="of-item">
+          <div class="of-icon">🌙</div>
+          <div class="of-label">Log Your Mood</div>
+        </div>
+        <div class="of-item">
+          <div class="of-icon">🌬️</div>
+          <div class="of-label">Breathe &amp; Calm</div>
+        </div>
+        <div class="of-item">
+          <div class="of-icon">💬</div>
+          <div class="of-label">Chat with AI</div>
+        </div>
+        <div class="of-item">
+          <div class="of-icon">📊</div>
+          <div class="of-label">Track Insights</div>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="dismissOnboarding()" style="width:100%;">Get Started 🌿</button>
+    </div>
+  </div>
+
+  <!-- Week 3: Keyboard Shortcut Hint -->
+  <div id="shortcutHint" class="shortcut-hint" title="Keyboard Shortcuts" aria-label="Show keyboard shortcuts">?</div>
+  <div id="shortcutPanel" class="shortcut-panel" aria-hidden="true">
+    <div class="sp-title">⌨️ Shortcuts</div>
+    <div class="sp-row"><kbd>M</kbd><span>Log Mood</span></div>
+    <div class="sp-row"><kbd>B</kbd><span>Breathe</span></div>
+    <div class="sp-row"><kbd>C</kbd><span>Chat</span></div>
+    <div class="sp-row"><kbd>D</kbd><span>Dashboard</span></div>
+    <div class="sp-row"><kbd>I</kbd><span>Insights</span></div>
+    <div class="sp-row"><kbd>S</kbd><span>Summary</span></div>
+  </div>
+
+  <!-- ── SOS Floating Button ── -->
+  <button class="sos-float-btn" onclick="openSOS()" aria-label="Open mental health helplines" id="sosFloatBtn">
+    <span class="sos-icon">🆘</span> Need Help?
+  </button>
+
+  <!-- ── SOS Modal ── -->
+  <div class="sos-modal" id="sosModal" role="dialog" aria-modal="true" aria-labelledby="sosModalTitle">
+    <div class="sos-dialog">
+      <button class="sos-close-btn" onclick="closeSOS()" aria-label="Close helpline popup">✕</button>
+      <div class="sos-dialog-header">
+        <div class="sos-dialog-icon">🆘</div>
+        <div>
+          <div class="sos-dialog-title" id="sosModalTitle">You are not alone.</div>
+          <div class="sos-dialog-subtitle">Free, confidential mental health support — available right now.</div>
+        </div>
+      </div>
+
+      <!-- GOVT / PRIMARY -->
+      <div class="sos-section-label">🏛️ Government Helplines — Free &amp; Official</div>
+
+      <a href="tel:18005990019" class="sos-helpline priority">
+        <div class="sos-helpline-emoji">📞</div>
+        <div class="sos-helpline-info">
+          <div class="sos-helpline-name">KIRAN Mental Health Helpline <span class="sos-priority-badge">Govt. of India</span></div>
+          <div class="sos-helpline-org">Ministry of Social Justice &amp; Empowerment</div>
+          <div class="sos-tags"><span class="sos-tag">Toll-Free</span><span class="sos-tag">24/7</span><span class="sos-tag">13 Languages</span><span class="sos-tag">Pan-India</span></div>
+        </div>
+        <div class="sos-helpline-number">1800-599-0019</div>
+      </a>
+
+      <a href="tel:08046110007" class="sos-helpline priority">
+        <div class="sos-helpline-emoji">🏥</div>
+        <div class="sos-helpline-info">
+          <div class="sos-helpline-name">NIMHANS Helpline <span class="sos-priority-badge">Govt. of India</span></div>
+          <div class="sos-helpline-org">Nat. Institute of Mental Health &amp; Neuro Sciences, Bengaluru</div>
+          <div class="sos-tags"><span class="sos-tag">Free</span><span class="sos-tag">Expert Support</span></div>
+        </div>
+        <div class="sos-helpline-number">080-4611-0007</div>
+      </a>
+
+      <a href="tel:14416" class="sos-helpline priority">
+        <div class="sos-helpline-emoji">🧠</div>
+        <div class="sos-helpline-info">
+          <div class="sos-helpline-name">SNEHI / NIMHANS Short Code <span class="sos-priority-badge">Govt.</span></div>
+          <div class="sos-helpline-org">National Mental Health Programme, India</div>
+          <div class="sos-tags"><span class="sos-tag">Toll-Free</span><span class="sos-tag">Short Code</span></div>
+        </div>
+        <div class="sos-helpline-number">14416</div>
+      </a>
+
+      <!-- TISS / ACADEMIC -->
+      <div class="sos-section-label">🎓 Academic &amp; Research Helplines</div>
+
+      <a href="tel:9152987821" class="sos-helpline">
+        <div class="sos-helpline-emoji">📱</div>
+        <div class="sos-helpline-info">
+          <div class="sos-helpline-name">iCall — TISS</div>
+          <div class="sos-helpline-org">Tata Institute of Social Sciences, Mumbai</div>
+          <div class="sos-tags"><span class="sos-tag">Mon–Sat</span><span class="sos-tag">8am–10pm</span><span class="sos-tag">Chat &amp; Call</span></div>
+        </div>
+        <div class="sos-helpline-number">9152987821</div>
+      </a>
+
+      <!-- CRISIS / 24x7 -->
+      <div class="sos-section-label">🌙 24×7 Crisis Lines</div>
+
+      <a href="tel:9820466627" class="sos-helpline">
+        <div class="sos-helpline-emoji">🕯️</div>
+        <div class="sos-helpline-info">
+          <div class="sos-helpline-name">AASRA</div>
+          <div class="sos-helpline-org">Suicide prevention &amp; crisis intervention</div>
+          <div class="sos-tags"><span class="sos-tag">24/7</span><span class="sos-tag">All India</span></div>
+        </div>
+        <div class="sos-helpline-number">9820466627</div>
+      </a>
+
+      <a href="tel:18602662345" class="sos-helpline">
+        <div class="sos-helpline-emoji">💙</div>
+        <div class="sos-helpline-info">
+          <div class="sos-helpline-name">Vandrevala Foundation</div>
+          <div class="sos-helpline-org">Mental health helpline for all ages</div>
+          <div class="sos-tags"><span class="sos-tag">24/7</span><span class="sos-tag">Confidential</span></div>
+        </div>
+        <div class="sos-helpline-number">1860-2662-345</div>
+      </a>
+
+      <a href="tel:04424640050" class="sos-helpline">
+        <div class="sos-helpline-emoji">🤝</div>
+        <div class="sos-helpline-info">
+          <div class="sos-helpline-name">Snehi</div>
+          <div class="sos-helpline-org">Emotional support &amp; suicide prevention, Chennai</div>
+          <div class="sos-tags"><span class="sos-tag">Mon–Sat</span><span class="sos-tag">8am–10pm</span></div>
+        </div>
+        <div class="sos-helpline-number">044-24640050</div>
+      </a>
+
+      <a href="tel:01123389090" class="sos-helpline">
+        <div class="sos-helpline-emoji">☀️</div>
+        <div class="sos-helpline-info">
+          <div class="sos-helpline-name">Sumaitri</div>
+          <div class="sos-helpline-org">Emotional support helpline, Delhi</div>
+          <div class="sos-tags"><span class="sos-tag">Daily 2pm–10pm</span></div>
+        </div>
+        <div class="sos-helpline-number">011-23389090</div>
+      </a>
+
+      <p class="sos-modal-note">All calls are free and confidential. If you are in immediate danger, please call <strong>112</strong> (Emergency) or go to your nearest hospital.</p>
+    </div>
+  </div>
+
+  <!-- ── Onboarding Modal (first visit) — Sahil Week 3/4 ── -->
+  <div id="onboardModal" class="onboard-modal" role="dialog" aria-modal="true" aria-labelledby="obTitle" style="display:none">
+    <div class="onboard-dialog">
+      <div class="ob-header">
+        <div class="ob-logo">🧠</div>
+        <h2 id="obTitle">Welcome to Placida</h2>
+        <p>Your personal mental wellness companion. Here's what you can do:</p>
+      </div>
+      <div class="ob-features">
+        <div class="ob-feat"><span>🌙</span><div><strong>Log Your Mood</strong><br><small>Track how you feel every day with emoji + notes</small></div></div>
+        <div class="ob-feat"><span>📊</span><div><strong>View Insights</strong><br><small>7-day charts, streaks and mood patterns</small></div></div>
+        <div class="ob-feat"><span>🌬️</span><div><strong>Breathe</strong><br><small>Guided breathing sessions to calm your mind</small></div></div>
+        <div class="ob-feat"><span>💬</span><div><strong>Chat with AI</strong><br><small>Talk to Placida AI — judgment-free, always here</small></div></div>
+        <div class="ob-feat"><span>🌿</span><div><strong>Relax</strong><br><small>Stress-relief games and calming activities</small></div></div>
+      </div>
+      <button class="btn-primary" onclick="closeOnboard()" style="width:100%;margin-top:8px" id="obStartBtn">Let's Begin 🌿</button>
+      <p class="ob-note">All data stays on your device — nothing is shared.</p>
+    </div>
+  </div>
+
+  <script src="supabase.js"></script>
+  <script>document.addEventListener('supabase:ready', () => { if(window.supabase) requireAuth(); });</script>
+  <script src="script.js"></script>
+  <script>
+    function openSOS()  { document.getElementById('sosModal').classList.add('show'); document.body.style.overflow='hidden'; }
+    function closeSOS() { document.getElementById('sosModal').classList.remove('show'); document.body.style.overflow=''; }
+    document.getElementById('sosModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeSOS(); });
+    document.addEventListener('keydown', e => { if(e.key==='Escape') closeSOS(); });
+    // Onboarding
+    function closeOnboard(){
+      document.getElementById('onboardModal').style.display='none';
+      document.body.style.overflow='';
+      localStorage.setItem('placida_welcomed','1');
+    }
+    if(!localStorage.getItem('placida_welcomed')){
+      const m=document.getElementById('onboardModal');
+      m.style.display='flex';
+      document.body.style.overflow='hidden';
+      m.addEventListener('click',e=>{if(e.target===m)closeOnboard();});
+    }
+  </script>
+
+</body>
+
+</html>

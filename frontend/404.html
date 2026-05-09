@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Page not found — Placida Mental Wellness" />
+  <!-- OG Tags -->
+  <meta property="og:title" content="404 — Page Not Found · Placida" />
+  <meta property="og:type" content="website" />
+  <title>404 — Lost in the Mind · Placida</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-512.png" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <style>
+    .not-found-page {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 24px;
+      min-height: 70vh;
+      animation: fadeInUp 0.7s ease both;
+    }
+
+    .nf-orb {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%,
+        rgba(124,106,247,0.4) 0%,
+        rgba(94,196,182,0.15) 60%,
+        transparent 100%);
+      border: 2px solid rgba(124,106,247,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      margin-bottom: 32px;
+      box-shadow: 0 0 60px rgba(124,106,247,0.25);
+      animation: floatOrb 8s ease-in-out infinite alternate;
+    }
+
+    .nf-code {
+      font-size: clamp(5rem, 18vw, 9rem);
+      font-weight: 800;
+      letter-spacing: -4px;
+      line-height: 1;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, rgba(124,106,247,0.5), rgba(94,196,182,0.4));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0.7;
+    }
+
+    .nf-title {
+      font-size: clamp(1.3rem, 4vw, 2rem);
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+      letter-spacing: -0.5px;
+    }
+
+    .nf-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 380px;
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+
+    .nf-links {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+
+    .nf-links a.btn-primary {
+      text-decoration: none;
+      display: inline-block;
+      width: auto;
+      padding: 14px 32px;
+    }
+
+    .nf-links a.btn-secondary {
+      text-decoration: none;
+      display: inline-block;
+      width: auto;
+      padding: 14px 28px;
+    }
+
+    .nf-suggestions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 520px;
+      width: 100%;
+    }
+
+    @media (max-width: 480px) {
+      .nf-suggestions { grid-template-columns: 1fr; }
+    }
+
+    .nf-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 16px;
+      padding: 18px 14px;
+      text-decoration: none;
+      text-align: center;
+      transition: all var(--transition);
+    }
+    .nf-card:hover {
+      transform: translateY(-4px);
+      background: var(--bg-card-hover);
+      box-shadow: var(--shadow-card), var(--shadow-glow);
+    }
+    .nf-card-icon  { font-size: 1.6rem; margin-bottom: 8px; }
+    .nf-card-label { font-size: 0.8rem; font-weight: 600; color: var(--text-soft); }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo" aria-label="Placida home">
+      <div class="logo-icon" aria-hidden="true">🧠</div>
+      <span class="logo-text">Placida</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="breathe.html">Breathe</a></li>
+      <li><a href="chatbot.html">Chat</a></li>
+      <li><a href="insights.html">Insights</a></li>
+      <li><a href="relax.html">Relax</a></li>
+      <li><a href="feedback.html">Feedback</a></li>
+    </ul>
+    <button class="btn-logout" onclick="signOut()" aria-label="Logout">⏻ Logout</button>
+  </nav>
+
+  <main class="page-wrapper">
+    <div class="not-found-page" role="main" aria-labelledby="nf-heading">
+
+      <div class="nf-orb" aria-hidden="true">🌿</div>
+
+      <div class="nf-code" aria-hidden="true">404</div>
+      <h1 class="nf-title" id="nf-heading">Lost in the Mind</h1>
+      <p class="nf-desc">
+        This page doesn't exist — but that's okay. Take a breath, and let's guide you back to where you need to be.
+      </p>
+
+      <div class="nf-links">
+        <a href="index.html" class="btn-primary">← Back to Home</a>
+        <a href="breathe.html" class="btn-secondary">🌬️ Take a Breath</a>
+      </div>
+
+      <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:16px;">
+        Or explore one of these:
+      </p>
+
+      <div class="nf-suggestions" aria-label="Page suggestions">
+        <a href="dashboard.html" class="nf-card" aria-label="Go to Dashboard">
+          <div class="nf-card-icon">📊</div>
+          <div class="nf-card-label">Dashboard</div>
+        </a>
+        <a href="relax.html" class="nf-card" aria-label="Go to Relax">
+          <div class="nf-card-icon">🌿</div>
+          <div class="nf-card-label">Relax</div>
+        </a>
+        <a href="chatbot.html" class="nf-card" aria-label="Go to Chat">
+          <div class="nf-card-icon">💬</div>
+          <div class="nf-card-label">Chat</div>
+        </a>
+        <a href="feedback.html" class="nf-card" aria-label="Go to Feedback">
+          <div class="nf-card-icon">💬</div>
+          <div class="nf-card-label">Feedback</div>
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p class="footer-brand">Made with 💜 by <strong>Sahil, Ayushi, Sanchari &amp; Divyans</strong> · © 2026 Placida</p>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+    </ul>
+  </footer>
+
+  <button class="sos-float-btn" onclick="openSOS()" aria-label="Open helplines" id="sosFloatBtn"><span class="sos-icon">🆘</span> Need Help?</button>
+  <div class="sos-modal" id="sosModal" role="dialog" aria-modal="true" aria-labelledby="sosModalTitle">
+    <div class="sos-dialog">
+      <button class="sos-close-btn" onclick="closeSOS()" aria-label="Close">✕</button>
+      <div class="sos-dialog-header"><div class="sos-dialog-icon">🆘</div><div><div class="sos-dialog-title" id="sosModalTitle">You are not alone.</div><div class="sos-dialog-subtitle">Free, confidential support — right now.</div></div></div>
+      <div class="sos-section-label">🏛️ Government Helplines</div>
+      <a href="tel:18005990019" class="sos-helpline priority"><div class="sos-helpline-emoji">📞</div><div class="sos-helpline-info"><div class="sos-helpline-name">KIRAN <span class="sos-priority-badge">Govt. of India</span></div><div class="sos-helpline-org">Ministry of Social Justice &amp; Empowerment</div><div class="sos-tags"><span class="sos-tag">Toll-Free</span><span class="sos-tag">24/7</span><span class="sos-tag">13 Languages</span></div></div><div class="sos-helpline-number">1800-599-0019</div></a>
+      <a href="tel:08046110007" class="sos-helpline priority"><div class="sos-helpline-emoji">🏥</div><div class="sos-helpline-info"><div class="sos-helpline-name">NIMHANS <span class="sos-priority-badge">Govt. of India</span></div><div class="sos-helpline-org">Nat. Institute of Mental Health &amp; Neuro Sciences</div><div class="sos-tags"><span class="sos-tag">Free</span></div></div><div class="sos-helpline-number">080-4611-0007</div></a>
+      <a href="tel:9820466627" class="sos-helpline"><div class="sos-helpline-emoji">🕯️</div><div class="sos-helpline-info"><div class="sos-helpline-name">AASRA</div><div class="sos-helpline-org">Suicide prevention &amp; crisis intervention</div><div class="sos-tags"><span class="sos-tag">24/7</span></div></div><div class="sos-helpline-number">9820466627</div></a>
+      <p class="sos-modal-note">In immediate danger, call <strong>112</strong>.</p>
+    </div>
+  </div>
+  <script src="supabase.js"></script>
+  <script>
+    function openSOS(){document.getElementById('sosModal').classList.add('show');document.body.style.overflow='hidden';}
+    function closeSOS(){document.getElementById('sosModal').classList.remove('show');document.body.style.overflow='';}
+    document.getElementById('sosModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeSOS();});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSOS();});
+  </script>
+</body>
+</html>

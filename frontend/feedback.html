@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Share your feedback on Placida — rate features and help us improve your mental wellness experience." />
+  <!-- OG / Social Sharing -->
+  <meta property="og:title" content="Feedback — Placida" />
+  <meta property="og:description" content="Rate Placida's features and share your thoughts to help us improve." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bugbitcoder.github.io/PLACIDA/feedback.html" />
+  <meta property="og:site_name" content="Placida" />
+  <title>Feedback — Placida</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-512.png" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+</head>
+
+<body>
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo" aria-label="Placida home">
+      <div class="logo-icon" aria-hidden="true">🧠</div>
+      <span class="logo-text">Placida</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="breathe.html">Breathe</a></li>
+      <li><a href="chatbot.html">Chat</a></li>
+      <li><a href="insights.html">Insights</a></li>
+      <li><a href="relax.html">Relax</a></li>
+      <li><a href="feedback.html" class="active" aria-current="page">Feedback</a></li>
+    </ul>
+    <button class="btn-logout" onclick="signOut()" aria-label="Logout" title="Sign out">⏻ Logout</button>
+  </nav>
+
+  <!-- ── Page Wrapper ── -->
+  <main class="page-wrapper">
+
+    <!-- ── Page Hero ── -->
+    <section class="feedback-hero" aria-labelledby="feedback-title">
+      <div class="hero-badge" aria-label="Feedback">
+        <span>💬</span> Week 4 — Your voice matters
+      </div>
+      <h1 id="feedback-title">Share Your Feedback</h1>
+      <p>Help us make Placida better. Rate each feature and tell us what you think — it takes under 2 minutes.</p>
+    </section>
+
+    <!-- ── Feedback Form ── -->
+    <div class="feedback-grid" id="feedbackFormWrapper">
+
+      <!-- ── Feature Ratings Card ── -->
+      <div class="glass-card" aria-label="Feature ratings">
+        <div class="card-header">
+          <div class="card-icon purple" aria-hidden="true">⭐</div>
+          <div>
+            <div class="card-title">Rate Each Feature</div>
+            <div class="card-subtitle">Tap the stars to rate from 1 (poor) to 5 (excellent)</div>
+          </div>
+        </div>
+
+        <!-- Mood Logger -->
+        <div class="feature-rating-row" id="rating-moodlogger">
+          <div class="feature-rating-info">
+            <span class="feature-icon">🌙</span>
+            <div>
+              <div class="feature-name">Mood Logger</div>
+              <div class="feature-desc">Log daily moods with emoji + note</div>
+            </div>
+          </div>
+          <div class="star-group" role="group" aria-label="Rate Mood Logger" data-feature="moodlogger">
+            <button class="star-btn" data-value="1" aria-label="1 star">★</button>
+            <button class="star-btn" data-value="2" aria-label="2 stars">★</button>
+            <button class="star-btn" data-value="3" aria-label="3 stars">★</button>
+            <button class="star-btn" data-value="4" aria-label="4 stars">★</button>
+            <button class="star-btn" data-value="5" aria-label="5 stars">★</button>
+          </div>
+          <span class="star-label" id="label-moodlogger">—</span>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="feature-rating-row" id="rating-dashboard">
+          <div class="feature-rating-info">
+            <span class="feature-icon">📊</span>
+            <div>
+              <div class="feature-name">Dashboard</div>
+              <div class="feature-desc">Mood history, chart & streak</div>
+            </div>
+          </div>
+          <div class="star-group" role="group" aria-label="Rate Dashboard" data-feature="dashboard">
+            <button class="star-btn" data-value="1" aria-label="1 star">★</button>
+            <button class="star-btn" data-value="2" aria-label="2 stars">★</button>
+            <button class="star-btn" data-value="3" aria-label="3 stars">★</button>
+            <button class="star-btn" data-value="4" aria-label="4 stars">★</button>
+            <button class="star-btn" data-value="5" aria-label="5 stars">★</button>
+          </div>
+          <span class="star-label" id="label-dashboard">—</span>
+        </div>
+
+        <!-- Breathing -->
+        <div class="feature-rating-row" id="rating-breathing">
+          <div class="feature-rating-info">
+            <span class="feature-icon">🌬️</span>
+            <div>
+              <div class="feature-name">Breathing Exercises</div>
+              <div class="feature-desc">4-7-8, box breathing & more</div>
+            </div>
+          </div>
+          <div class="star-group" role="group" aria-label="Rate Breathing" data-feature="breathing">
+            <button class="star-btn" data-value="1" aria-label="1 star">★</button>
+            <button class="star-btn" data-value="2" aria-label="2 stars">★</button>
+            <button class="star-btn" data-value="3" aria-label="3 stars">★</button>
+            <button class="star-btn" data-value="4" aria-label="4 stars">★</button>
+            <button class="star-btn" data-value="5" aria-label="5 stars">★</button>
+          </div>
+          <span class="star-label" id="label-breathing">—</span>
+        </div>
+
+        <!-- Chat -->
+        <div class="feature-rating-row" id="rating-chat">
+          <div class="feature-rating-info">
+            <span class="feature-icon">💬</span>
+            <div>
+              <div class="feature-name">AI Chat</div>
+              <div class="feature-desc">Placida AI chatbot companion</div>
+            </div>
+          </div>
+          <div class="star-group" role="group" aria-label="Rate AI Chat" data-feature="chat">
+            <button class="star-btn" data-value="1" aria-label="1 star">★</button>
+            <button class="star-btn" data-value="2" aria-label="2 stars">★</button>
+            <button class="star-btn" data-value="3" aria-label="3 stars">★</button>
+            <button class="star-btn" data-value="4" aria-label="4 stars">★</button>
+            <button class="star-btn" data-value="5" aria-label="5 stars">★</button>
+          </div>
+          <span class="star-label" id="label-chat">—</span>
+        </div>
+
+        <!-- Journal -->
+        <div class="feature-rating-row" id="rating-journal">
+          <div class="feature-rating-info">
+            <span class="feature-icon">📓</span>
+            <div>
+              <div class="feature-name">Journal / Summary</div>
+              <div class="feature-desc">Weekly summary & journaling prompts</div>
+            </div>
+          </div>
+          <div class="star-group" role="group" aria-label="Rate Journal" data-feature="journal">
+            <button class="star-btn" data-value="1" aria-label="1 star">★</button>
+            <button class="star-btn" data-value="2" aria-label="2 stars">★</button>
+            <button class="star-btn" data-value="3" aria-label="3 stars">★</button>
+            <button class="star-btn" data-value="4" aria-label="4 stars">★</button>
+            <button class="star-btn" data-value="5" aria-label="5 stars">★</button>
+          </div>
+          <span class="star-label" id="label-journal">—</span>
+        </div>
+
+      </div><!-- /feature ratings card -->
+
+      <!-- ── Open-ended Questions Card ── -->
+      <div class="glass-card" aria-label="Open feedback">
+        <div class="card-header">
+          <div class="card-icon teal" aria-hidden="true">✍️</div>
+          <div>
+            <div class="card-title">Tell Us More</div>
+            <div class="card-subtitle">Your words shape the future of Placida</div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="feedbackLike">💚 What did you like most?</label>
+          <textarea id="feedbackLike" rows="3"
+            placeholder="e.g. The breathing timer really helped me calm down during stressful moments…"
+            aria-label="What you liked"></textarea>
+        </div>
+
+        <div class="input-group">
+          <label for="feedbackImprove">🔧 What would you improve?</label>
+          <textarea id="feedbackImprove" rows="3"
+            placeholder="e.g. I wish the chatbot had more responses for anxiety…"
+            aria-label="What to improve"></textarea>
+        </div>
+
+        <div class="input-group">
+          <label for="feedbackFeature">✨ Which feature would you add next?</label>
+          <textarea id="feedbackFeature" rows="2"
+            placeholder="e.g. Sleep tracking, guided meditation, community support…"
+            aria-label="Feature request"></textarea>
+        </div>
+
+        <!-- Overall NPS -->
+        <div class="nps-section" aria-label="Net Promoter Score">
+          <p class="mood-label">How likely are you to recommend Placida?</p>
+          <div class="nps-scale" role="group" aria-label="Likelihood to recommend, 1 to 10">
+            <div class="nps-row" id="npsRow">
+              <!-- Rendered by JS -->
+            </div>
+            <div class="nps-labels">
+              <span>Not likely</span>
+              <span>Extremely likely</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Actions -->
+        <div class="feedback-actions">
+          <button id="submitFeedbackBtn" class="btn-primary" onclick="submitFeedback()" aria-label="Submit feedback">
+            Submit Feedback 🌿
+          </button>
+          <button id="exportFeedbackBtn" class="btn-secondary" onclick="exportFeedback()" aria-label="Export as JSON">
+            Export as JSON ↓
+          </button>
+        </div>
+      </div><!-- /open-ended card -->
+
+      <!-- ── Past Submissions Card ── -->
+      <div class="glass-card col-span-2" id="pastFeedbackCard" aria-label="Previous submissions" style="display:none;">
+        <div class="card-header">
+          <div class="card-icon pink" aria-hidden="true">📋</div>
+          <div>
+            <div class="card-title">Your Past Submissions</div>
+            <div class="card-subtitle">Feedback you've already submitted</div>
+          </div>
+          <button class="btn-clear" onclick="clearFeedbackHistory()" aria-label="Clear feedback history">
+            🗑️ Clear
+          </button>
+        </div>
+        <div id="pastFeedbackList" class="past-feedback-list"></div>
+      </div>
+
+    </div><!-- /feedback-grid -->
+
+    <!-- ── Thank You Card (shown after submit) ── -->
+    <div id="thankYouCard" class="thank-you-card" style="display:none;" aria-live="polite">
+      <div class="ty-emoji">🎉</div>
+      <h2>Thank you, Sahil!</h2>
+      <p>Your feedback has been saved and will help us improve Placida for everyone. The team appreciates you taking the time.</p>
+      <button class="btn-primary" onclick="resetForm()" style="max-width:240px;margin:0 auto;" aria-label="Submit another response">
+        Submit Another
+      </button>
+    </div>
+
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <p class="footer-brand">
+      Made with 💜 by <strong>Sahil</strong> &amp; Team · © 2026 Placida
+    </p>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="insights.html">Insights</a></li>
+    </ul>
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="supabase.js"></script>
+  <script>document.addEventListener('supabase:ready', () => { if(window.supabase) requireAuth(); });</script>
+
+  <script>
+    /* ================================================
+       PLACIDA — feedback.js (Week 4, Sahil)
+       Inline for single-file simplicity
+    ================================================ */
+
+    // ── State ──
+    const ratings = {
+      moodlogger: 0,
+      dashboard:  0,
+      breathing:  0,
+      chat:       0,
+      journal:    0
+    };
+    let npsScore = 0;
+
+    const starLabels = ['', 'Poor 😕', 'Fair 🤔', 'Good 🙂', 'Great 😊', 'Excellent 🤩'];
+
+    // ── Star Rating Logic ──
+    document.querySelectorAll('.star-group').forEach(group => {
+      const feature = group.dataset.feature;
+      const stars   = group.querySelectorAll('.star-btn');
+      const label   = document.getElementById('label-' + feature);
+
+      stars.forEach((star, idx) => {
+        // Hover preview
+        star.addEventListener('mouseenter', () => highlightStars(stars, idx + 1, false));
+        star.addEventListener('mouseleave', () => highlightStars(stars, ratings[feature], true));
+
+        // Click to rate
+        star.addEventListener('click', () => {
+          ratings[feature] = idx + 1;
+          highlightStars(stars, idx + 1, true);
+          if (label) {
+            label.textContent = starLabels[idx + 1];
+            label.classList.add('label-pop');
+            setTimeout(() => label.classList.remove('label-pop'), 300);
+          }
+        });
+      });
+    });
+
+    function highlightStars(stars, count, permanent) {
+      stars.forEach((s, i) => {
+        s.classList.toggle('star-active',  i < count);
+        s.classList.toggle('star-hover',   !permanent && i < count);
+        s.classList.toggle('star-filled',  permanent  && i < count);
+      });
+    }
+
+    // ── NPS Scale ──
+    (function buildNPS() {
+      const row = document.getElementById('npsRow');
+      for (let i = 1; i <= 10; i++) {
+        const btn = document.createElement('button');
+        btn.className   = 'nps-btn';
+        btn.textContent = i;
+        btn.id          = 'nps-' + i;
+        btn.setAttribute('aria-label', `Score ${i} out of 10`);
+        btn.addEventListener('click', () => {
+          npsScore = i;
+          document.querySelectorAll('.nps-btn').forEach(b => b.classList.remove('nps-selected'));
+          btn.classList.add('nps-selected');
+        });
+        row.appendChild(btn);
+      }
+    })();
+
+    // ── Submit ──
+    function submitFeedback() {
+      // Validate at least 1 feature rated
+      const hasRating = Object.values(ratings).some(r => r > 0);
+      if (!hasRating) {
+        showToast('⭐ Please rate at least one feature first!');
+        return;
+      }
+
+      const entry = {
+        id:          Date.now(),
+        timestamp:   new Date().toISOString(),
+        ratings:     { ...ratings },
+        nps:         npsScore,
+        liked:       document.getElementById('feedbackLike').value.trim(),
+        improve:     document.getElementById('feedbackImprove').value.trim(),
+        featureReq:  document.getElementById('feedbackFeature').value.trim()
+      };
+
+      // Save to localStorage
+      const all = JSON.parse(localStorage.getItem('placida_feedback') || '[]');
+      all.push(entry);
+      localStorage.setItem('placida_feedback', JSON.stringify(all));
+
+      // Show thank you
+      document.getElementById('feedbackFormWrapper').style.display = 'none';
+      const ty = document.getElementById('thankYouCard');
+      ty.style.display = 'flex';
+      setTimeout(() => ty.classList.add('ty-visible'), 10);
+
+      loadPastFeedback();
+      showToast('✅ Feedback saved! Thank you 🌿');
+    }
+
+    // ── Export as JSON ──
+    function exportFeedback() {
+      const entry = {
+        timestamp:  new Date().toISOString(),
+        ratings:    { ...ratings },
+        nps:        npsScore,
+        liked:      document.getElementById('feedbackLike').value.trim(),
+        improve:    document.getElementById('feedbackImprove').value.trim(),
+        featureReq: document.getElementById('feedbackFeature').value.trim()
+      };
+
+      const json = JSON.stringify(entry, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = `placida_feedback_${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('📥 Exported as JSON!');
+    }
+
+    // ── Reset Form ──
+    function resetForm() {
+      // Reset ratings
+      Object.keys(ratings).forEach(k => ratings[k] = 0);
+      document.querySelectorAll('.star-btn').forEach(s => {
+        s.classList.remove('star-active', 'star-hover', 'star-filled');
+      });
+      document.querySelectorAll('.star-label').forEach(l => l.textContent = '—');
+
+      // Reset NPS
+      npsScore = 0;
+      document.querySelectorAll('.nps-btn').forEach(b => b.classList.remove('nps-selected'));
+
+      // Reset textareas
+      ['feedbackLike', 'feedbackImprove', 'feedbackFeature'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+
+      // Show form again
+      document.getElementById('feedbackFormWrapper').style.display = '';
+      const ty = document.getElementById('thankYouCard');
+      ty.classList.remove('ty-visible');
+      ty.style.display = 'none';
+    }
+
+    // ── Load Past Feedback ──
+    function loadPastFeedback() {
+      const all  = JSON.parse(localStorage.getItem('placida_feedback') || '[]');
+      const card = document.getElementById('pastFeedbackCard');
+      const list = document.getElementById('pastFeedbackList');
+
+      if (all.length === 0) {
+        card.style.display = 'none';
+        return;
+      }
+
+      card.style.display = '';
+      list.innerHTML = all.slice().reverse().map(entry => {
+        const date = new Date(entry.timestamp).toLocaleString('en-IN', {
+          dateStyle: 'medium', timeStyle: 'short'
+        });
+        const ratingStr = Object.entries(entry.ratings)
+          .filter(([,v]) => v > 0)
+          .map(([k, v]) => `<span class="past-rating-chip">${featureEmoji(k)} ${'★'.repeat(v)}${'☆'.repeat(5-v)}</span>`)
+          .join('');
+
+        return `
+          <div class="past-entry" aria-label="Feedback submitted ${date}">
+            <div class="past-entry-date">${date}${entry.nps ? ` &nbsp;·&nbsp; NPS: <strong>${entry.nps}/10</strong>` : ''}</div>
+            <div class="past-ratings-row">${ratingStr || '<span style="opacity:.5;font-size:.8rem;">No ratings</span>'}</div>
+            ${entry.liked   ? `<div class="past-text"><span class="past-text-label">💚 Liked:</span> ${escHtml(entry.liked)}</div>` : ''}
+            ${entry.improve ? `<div class="past-text"><span class="past-text-label">🔧 Improve:</span> ${escHtml(entry.improve)}</div>` : ''}
+          </div>`;
+      }).join('');
+    }
+
+    function clearFeedbackHistory() {
+      if (!confirm('Clear all your past feedback submissions? This cannot be undone.')) return;
+      localStorage.removeItem('placida_feedback');
+      loadPastFeedback();
+      showToast('🗑️ Feedback history cleared');
+    }
+
+    function featureEmoji(key) {
+      return { moodlogger:'🌙', dashboard:'📊', breathing:'🌬️', chat:'💬', journal:'📓' }[key] || '⭐';
+    }
+
+    function escHtml(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    // ── Toast ──
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3200);
+    }
+
+    // ── Init ──
+    loadPastFeedback();
+  </script>
+  <!-- SOS Floating Button -->
+  <button class="sos-float-btn" onclick="openSOS()" aria-label="Open mental health helplines" id="sosFloatBtn">
+    <span class="sos-icon">🆘</span> Need Help?
+  </button>
+  <!-- SOS Modal -->
+  <div class="sos-modal" id="sosModal" role="dialog" aria-modal="true" aria-labelledby="sosModalTitle">
+    <div class="sos-dialog">
+      <button class="sos-close-btn" onclick="closeSOS()" aria-label="Close">✕</button>
+      <div class="sos-dialog-header"><div class="sos-dialog-icon">🆘</div><div><div class="sos-dialog-title" id="sosModalTitle">You are not alone.</div><div class="sos-dialog-subtitle">Free, confidential mental health support — right now.</div></div></div>
+      <div class="sos-section-label">🏛️ Government Helplines — Free &amp; Official</div>
+      <a href="tel:18005990019" class="sos-helpline priority"><div class="sos-helpline-emoji">📞</div><div class="sos-helpline-info"><div class="sos-helpline-name">KIRAN <span class="sos-priority-badge">Govt. of India</span></div><div class="sos-helpline-org">Ministry of Social Justice &amp; Empowerment</div><div class="sos-tags"><span class="sos-tag">Toll-Free</span><span class="sos-tag">24/7</span><span class="sos-tag">13 Languages</span></div></div><div class="sos-helpline-number">1800-599-0019</div></a>
+      <a href="tel:08046110007" class="sos-helpline priority"><div class="sos-helpline-emoji">🏥</div><div class="sos-helpline-info"><div class="sos-helpline-name">NIMHANS <span class="sos-priority-badge">Govt. of India</span></div><div class="sos-helpline-org">Nat. Institute of Mental Health &amp; Neuro Sciences</div><div class="sos-tags"><span class="sos-tag">Free</span><span class="sos-tag">Expert Support</span></div></div><div class="sos-helpline-number">080-4611-0007</div></a>
+      <a href="tel:14416" class="sos-helpline priority"><div class="sos-helpline-emoji">🧠</div><div class="sos-helpline-info"><div class="sos-helpline-name">SNEHI Short Code <span class="sos-priority-badge">Govt.</span></div><div class="sos-helpline-org">National Mental Health Programme</div><div class="sos-tags"><span class="sos-tag">Toll-Free</span></div></div><div class="sos-helpline-number">14416</div></a>
+      <div class="sos-section-label">🎓 Academic</div>
+      <a href="tel:9152987821" class="sos-helpline"><div class="sos-helpline-emoji">📱</div><div class="sos-helpline-info"><div class="sos-helpline-name">iCall — TISS</div><div class="sos-helpline-org">Tata Institute of Social Sciences</div><div class="sos-tags"><span class="sos-tag">Mon–Sat 8am–10pm</span></div></div><div class="sos-helpline-number">9152987821</div></a>
+      <div class="sos-section-label">🌙 24×7 Crisis Lines</div>
+      <a href="tel:9820466627" class="sos-helpline"><div class="sos-helpline-emoji">🕯️</div><div class="sos-helpline-info"><div class="sos-helpline-name">AASRA</div><div class="sos-helpline-org">Suicide prevention &amp; crisis intervention</div><div class="sos-tags"><span class="sos-tag">24/7</span></div></div><div class="sos-helpline-number">9820466627</div></a>
+      <a href="tel:18602662345" class="sos-helpline"><div class="sos-helpline-emoji">💙</div><div class="sos-helpline-info"><div class="sos-helpline-name">Vandrevala Foundation</div><div class="sos-helpline-org">Mental health helpline, all ages</div><div class="sos-tags"><span class="sos-tag">24/7</span><span class="sos-tag">Confidential</span></div></div><div class="sos-helpline-number">1860-2662-345</div></a>
+      <a href="tel:04424640050" class="sos-helpline"><div class="sos-helpline-emoji">🤝</div><div class="sos-helpline-info"><div class="sos-helpline-name">Snehi</div><div class="sos-helpline-org">Emotional support, Chennai</div><div class="sos-tags"><span class="sos-tag">Mon–Sat 8am–10pm</span></div></div><div class="sos-helpline-number">044-24640050</div></a>
+      <a href="tel:01123389090" class="sos-helpline"><div class="sos-helpline-emoji">☀️</div><div class="sos-helpline-info"><div class="sos-helpline-name">Sumaitri</div><div class="sos-helpline-org">Emotional support, Delhi</div><div class="sos-tags"><span class="sos-tag">Daily 2pm–10pm</span></div></div><div class="sos-helpline-number">011-23389090</div></a>
+      <p class="sos-modal-note">All calls are free and confidential. In immediate danger, call <strong>112</strong>.</p>
+    </div>
+  </div>
+  <script>
+    function openSOS()  { document.getElementById('sosModal').classList.add('show'); document.body.style.overflow='hidden'; }
+    function closeSOS() { document.getElementById('sosModal').classList.remove('show'); document.body.style.overflow=''; }
+    document.getElementById('sosModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeSOS(); });
+    document.addEventListener('keydown', e => { if(e.key==='Escape') closeSOS(); });
+  </script>
+
+</body>
+
+</html>

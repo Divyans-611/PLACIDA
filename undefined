@@ -1,0 +1,40 @@
+import type React from "react"
+import type { Metadata } from "next"
+import { GeistMono } from "geist/font/mono"
+
+import { Analytics } from "@vercel/analytics/next"
+import { Suspense } from "react"
+import "./globals.css"
+import { Poppins, Poppins as V0_Font_Poppins, Geist_Mono as V0_Font_Geist_Mono, Source_Serif_4 as V0_Font_Source_Serif_4 } from 'next/font/google'
+
+// Initialize fonts
+const _poppins = V0_Font_Poppins({ subsets: ['latin'], weight: ["100","200","300","400","500","600","700","800","900"] })
+const _geistMono = V0_Font_Geist_Mono({ subsets: ['latin'], weight: ["100","200","300","400","500","600","700","800","900"] })
+const _sourceSerif_4 = V0_Font_Source_Serif_4({ subsets: ['latin'], weight: ["200","300","400","500","600","700","800","900"] })
+
+const poppins = Poppins({
+  weight: ["400", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-poppins",
+})
+
+export const metadata: Metadata = {
+  title: "Placida",
+  description: "Find Your Peace with Placida",
+  generator: "v0.app",
+}
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <html lang="en" className={`${poppins.variable} ${GeistMono.variable} antialiased`}>
+      <body className="font-serif">
+        <Suspense fallback={null}>{children}</Suspense>
+        <Analytics />
+      </body>
+    </html>
+  )
+}

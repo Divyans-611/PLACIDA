@@ -1,0 +1,180 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Neutrals */
+  --background: oklch(0.98 0.01 320); /* soft off-white with lilac hint */
+  --foreground: oklch(0.2 0.03 320); /* deep neutral for text */
+
+  /* Surfaces */
+  --card: var(--background);
+  --card-foreground: var(--foreground);
+  --popover: var(--background);
+  --popover-foreground: var(--foreground);
+
+  /* Brand */
+  --primary: oklch(0.5 0.21 300); /* deep purple (brand) */
+  --primary-foreground: oklch(0.98 0.01 320);
+  --accent: oklch(0.86 0.1 350); /* pastel pink (accent) */
+  --accent-foreground: oklch(0.25 0.03 320);
+
+  /* Secondary/muted derived from neutrals */
+  --secondary: oklch(0.96 0.02 320);
+  --secondary-foreground: var(--foreground);
+  --muted: oklch(0.96 0.02 320);
+  --muted-foreground: oklch(0.5 0.04 320);
+
+  /* System */
+  --destructive: oklch(0.6 0.2 27.3);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.92 0.01 320);
+  --input: var(--border);
+  --ring: oklch(0.7 0.05 320);
+
+  /* Charts derived */
+  --chart-1: oklch(0.65 0.22 300);
+  --chart-2: oklch(0.78 0.16 350);
+  --chart-3: oklch(0.58 0.1 320);
+  --chart-4: oklch(0.84 0.14 280);
+  --chart-5: oklch(0.72 0.18 315);
+
+  /* Rounding */
+  --radius: 0.75rem;
+
+  /* Sidebar */
+  --sidebar: var(--secondary);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+
+  /* Gradient stops for hero */
+  --brand-stop-1: oklch(0.86 0.1 350); /* pastel pink */
+  --brand-stop-2: oklch(0.72 0.18 315); /* lilac */
+  --brand-stop-3: oklch(0.5 0.21 300); /* deep purple */
+  --font-sans: 'Poppins', 'Poppins Fallback';
+  --font-serif: 'Source Serif 4', 'Source Serif 4 Fallback';
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback';}
+
+.dark {
+  --background: oklch(0.16 0.03 310); /* deep lavender */
+  --foreground: oklch(0.96 0.01 320);
+  --card: var(--background);
+  --card-foreground: var(--foreground);
+  --popover: var(--background);
+  --popover-foreground: var(--foreground);
+
+  --primary: oklch(0.8 0.16 320); /* lighter purple for dark contrast */
+  --primary-foreground: oklch(0.2 0.03 320);
+  --secondary: oklch(0.22 0.02 320);
+  --secondary-foreground: var(--foreground);
+  --muted: oklch(0.22 0.02 320);
+  --muted-foreground: oklch(0.78 0.03 320);
+
+  --accent: oklch(0.75 0.15 350);
+  --accent-foreground: oklch(0.16 0.03 310);
+
+  --destructive: oklch(0.45 0.18 25.7);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.28 0.02 320);
+  --input: var(--border);
+  --ring: oklch(0.52 0.05 320);
+
+  --chart-1: oklch(0.7 0.2 320);
+  --chart-2: oklch(0.76 0.18 350);
+  --chart-3: oklch(0.62 0.12 300);
+  --chart-4: oklch(0.8 0.16 280);
+  --chart-5: oklch(0.68 0.15 315);
+
+  --sidebar: oklch(0.2 0.02 320);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+
+  --brand-stop-1: oklch(0.75 0.15 350);
+  --brand-stop-2: oklch(0.68 0.15 315);
+  --brand-stop-3: oklch(0.5 0.21 300);
+}
+
+@theme inline {
+  /* map font-sans to Poppins variable, keep mono */
+  --font-sans: 'Poppins', 'Poppins Fallback';
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --font-serif: 'Source Serif 4', 'Source Serif 4 Fallback';}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* animated gradient helper for hero background */
+@keyframes placidaGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.placida-animated-gradient {
+  background-image: radial-gradient(40% 60% at 10% 10%, var(--brand-stop-1), transparent 60%),
+    radial-gradient(40% 60% at 90% 20%, var(--brand-stop-2), transparent 60%),
+    radial-gradient(60% 60% at 50% 80%, var(--brand-stop-3), transparent 60%);
+  background-size: 200% 200%;
+  animation: placidaGradient 12s ease-in-out infinite;
+  filter: blur(0px);
+}

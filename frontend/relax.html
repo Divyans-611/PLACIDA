@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="description" content="Placida Relax — Stress-relieving mini games and calming activities."/>
+  <title>Relax — Placida</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-512.png" />
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <style>
+    /* ── Relax Page (Sahil: layout, Sanchari: Zen Canvas, Ayushi: Sound Tiles) ── */
+    .relax-hero{text-align:center;padding:52px 24px 28px;animation:fadeInUp .7s ease both}
+    .relax-hero h1{font-size:clamp(1.9rem,5vw,3.2rem);font-weight:800;letter-spacing:-1.2px;margin-bottom:12px;background:linear-gradient(135deg,#f0f0ff 0%,var(--accent-teal) 55%,var(--accent-purple) 100%);background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradientShift 6s ease infinite}
+    .relax-hero p{color:var(--text-muted);font-size:.95rem;max-width:440px;margin:0 auto;line-height:1.7}
+    .relax-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;max-width:980px;margin:0 auto;padding:0 24px 32px;animation:fadeInUp .8s ease .1s both}
+    .game-card{background:var(--bg-card);border:1px solid var(--border-glass);border-radius:22px;padding:24px;backdrop-filter:blur(16px);box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:14px}
+    .game-card-header{display:flex;align-items:center;gap:12px}
+    .game-badge{font-size:.6rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:3px 10px;border-radius:100px;background:rgba(124,106,247,.15);border:1px solid rgba(124,106,247,.3);color:#a89df9}
+    .game-badge.teal{background:rgba(94,196,182,.15);border-color:rgba(94,196,182,.3);color:var(--accent-teal)}
+    .game-badge.pink{background:rgba(240,107,139,.15);border-color:rgba(240,107,139,.3);color:#f06b8b}
+    .game-title{font-size:1rem;font-weight:700;color:var(--text-primary)}
+    .game-desc{font-size:.8rem;color:var(--text-muted);line-height:1.5;margin-top:-6px}
+    .game-area{border-radius:14px;overflow:hidden;background:rgba(0,0,0,.25);border:1px solid var(--border-glass);position:relative}
+    /* Bubble Pop (Sahil) */
+    #bubbleGrid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;padding:16px;min-height:180px}
+    .bubble{width:100%;aspect-ratio:1;border-radius:50%;cursor:pointer;transition:all .15s ease;border:none;font-size:1.1rem;display:flex;align-items:center;justify-content:center}
+    .bubble.intact{background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.35),rgba(124,106,247,.4));box-shadow:0 2px 8px rgba(124,106,247,.3),inset 0 1px 2px rgba(255,255,255,.3)}
+    .bubble.intact:hover{transform:scale(1.15);box-shadow:0 4px 16px rgba(124,106,247,.5)}
+    .bubble.popped{background:rgba(255,255,255,.04);box-shadow:none;cursor:default}
+    #bubbleScore{font-size:.78rem;color:var(--text-muted);text-align:center}
+    /* Zen Canvas (Sanchari) */
+    #zenCanvas{display:block;width:100%;height:200px;cursor:crosshair;touch-action:none}
+    .zen-controls{display:flex;gap:8px;flex-wrap:wrap;padding:0 2px}
+    .zc-btn{flex:1;min-width:60px;padding:7px 10px;border-radius:10px;border:1px solid var(--border-glass);background:rgba(255,255,255,.05);font-family:Inter,sans-serif;font-size:.75rem;font-weight:600;color:var(--text-muted);cursor:pointer;transition:all var(--transition)}
+    .zc-btn:hover,.zc-btn.active{background:rgba(94,196,182,.15);border-color:rgba(94,196,182,.35);color:var(--accent-teal)}
+    /* Sound Tiles (Ayushi) */
+    #soundGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:16px;min-height:180px}
+    .stile{border-radius:14px;border:none;cursor:pointer;font-size:1.4rem;aspect-ratio:1;display:flex;align-items:center;justify-content:center;transition:all .2s ease;position:relative;overflow:hidden}
+    .stile:active,.stile.lit{filter:brightness(1.4);transform:scale(.94)}
+    .stile::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:background .1s}
+    .stile:active::after{background:rgba(255,255,255,.18)}
+    #soundHint{font-size:.75rem;color:var(--text-muted);text-align:center;padding:4px 0}
+    /* External Cards */
+    .ext-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;max-width:980px;margin:0 auto;padding:0 24px 60px}
+    .ext-card{background:var(--bg-card);border:1px solid var(--border-glass);border-radius:16px;padding:18px 14px;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;transition:all var(--transition)}
+    .ext-card:hover{transform:translateY(-4px);background:var(--bg-card-hover);box-shadow:var(--shadow-card)}
+    .ext-icon{font-size:1.8rem}
+    .ext-name{font-size:.82rem;font-weight:700;color:var(--text-primary)}
+    .ext-tag{font-size:.68rem;color:var(--text-muted)}
+    .section-label{text-align:center;font-size:.68rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-muted);margin:28px 0 14px;padding:0 24px}
+    @media(max-width:600px){.relax-grid{grid-template-columns:1fr}#bubbleGrid{grid-template-columns:repeat(6,1fr)}#soundGrid{grid-template-columns:repeat(4,1fr)}}
+  </style>
+</head>
+<body>
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo" aria-label="Placida home">
+      <div class="logo-icon" aria-hidden="true">🧠</div>
+      <span class="logo-text">Placida</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="breathe.html">Breathe</a></li>
+      <li><a href="chatbot.html">Chat</a></li>
+      <li><a href="insights.html">Insights</a></li>
+      <li><a href="relax.html" class="active" aria-current="page">Relax</a></li>
+      <li><a href="feedback.html">Feedback</a></li>
+    </ul>
+    <button class="btn-logout" onclick="signOut()" aria-label="Logout">⏻ Logout</button>
+  </nav>
+
+  <main class="page-wrapper">
+    <section class="relax-hero" aria-labelledby="relax-title">
+      <div class="hero-badge">🌿 Stress Relief</div>
+      <h1 id="relax-title">Take a Breath.<br>Play. Unwind.</h1>
+      <p>Quick activities to reset your nervous system — no accounts, no scores, just calm.</p>
+    </section>
+
+    <div class="relax-grid">
+
+      <!-- BUBBLE POP — Sahil -->
+      <div class="game-card" aria-label="Bubble Pop game">
+        <div class="game-card-header">
+          <div class="card-icon purple" aria-hidden="true">🫧</div>
+          <div>
+            <div class="game-title">Bubble Pop</div>
+            <span class="game-badge">Sahil</span>
+          </div>
+        </div>
+        <p class="game-desc">Click every bubble to pop it. Satisfying, simple, effective.</p>
+        <div class="game-area">
+          <div id="bubbleGrid" role="group" aria-label="Bubble wrap grid"></div>
+        </div>
+        <div id="bubbleScore">0 / 48 popped</div>
+        <button class="btn-secondary" onclick="initBubbles()" style="padding:10px">🔄 Refill Bubbles</button>
+      </div>
+
+      <!-- ZEN CANVAS — Sanchari -->
+      <div class="game-card" aria-label="Zen Canvas drawing">
+        <div class="game-card-header">
+          <div class="card-icon teal" aria-hidden="true">🎨</div>
+          <div>
+            <div class="game-title">Zen Canvas</div>
+            <span class="game-badge teal">Sanchari</span>
+          </div>
+        </div>
+        <p class="game-desc">Draw freely with glowing colors. No right or wrong — just flow.</p>
+        <div class="game-area">
+          <canvas id="zenCanvas" aria-label="Drawing canvas"></canvas>
+        </div>
+        <div class="zen-controls">
+          <button class="zc-btn active" onclick="setZenColor('purple')" id="zc-purple">💜 Calm</button>
+          <button class="zc-btn" onclick="setZenColor('teal')"   id="zc-teal">🩵 Flow</button>
+          <button class="zc-btn" onclick="setZenColor('pink')"   id="zc-pink">🩷 Warm</button>
+          <button class="zc-btn" onclick="setZenColor('white')"  id="zc-white">🤍 Pure</button>
+          <button class="zc-btn" onclick="clearZen()">🗑️ Clear</button>
+        </div>
+      </div>
+
+      <!-- SOUND TILES — Ayushi -->
+      <div class="game-card" aria-label="Sound Tiles game">
+        <div class="game-card-header">
+          <div class="card-icon pink" aria-hidden="true">🎵</div>
+          <div>
+            <div class="game-title">Sound Tiles</div>
+            <span class="game-badge pink">Ayushi</span>
+          </div>
+        </div>
+        <p class="game-desc">Tap tiles to play soft calming tones. Create your own gentle melody.</p>
+        <div class="game-area">
+          <div id="soundGrid" role="group" aria-label="Sound tile grid"></div>
+        </div>
+        <div id="soundHint">Tap any tile ✨</div>
+      </div>
+
+    </div><!-- /relax-grid -->
+
+    <!-- External Resources -->
+    <div class="section-label">🌐 More Calm Experiences — Opens in New Tab</div>
+    <div class="ext-grid">
+      <a href="https://weavesilk.com" target="_blank" rel="noopener" class="ext-card">
+        <div class="ext-icon">🌌</div>
+        <div class="ext-name">Weave Silk</div>
+        <div class="ext-tag">Generative art</div>
+      </a>
+      <a href="https://asoftmurmur.com" target="_blank" rel="noopener" class="ext-card">
+        <div class="ext-icon">🌧️</div>
+        <div class="ext-name">A Soft Murmur</div>
+        <div class="ext-tag">Ambient sounds</div>
+      </a>
+      <a href="https://www.rainymood.com" target="_blank" rel="noopener" class="ext-card">
+        <div class="ext-icon">☔</div>
+        <div class="ext-name">Rainy Mood</div>
+        <div class="ext-tag">Rain & thunder</div>
+      </a>
+      <a href="https://patatap.com" target="_blank" rel="noopener" class="ext-card">
+        <div class="ext-icon">🎹</div>
+        <div class="ext-name">Patatap</div>
+        <div class="ext-tag">Sound & visuals</div>
+      </a>
+      <a href="https://mynoise.net" target="_blank" rel="noopener" class="ext-card">
+        <div class="ext-icon">🔊</div>
+        <div class="ext-name">myNoise</div>
+        <div class="ext-tag">Noise generators</div>
+      </a>
+      <a href="https://ncase.me/anxiety/" target="_blank" rel="noopener" class="ext-card">
+        <div class="ext-icon">🦁</div>
+        <div class="ext-name">Anxiety Comic</div>
+        <div class="ext-tag">Interactive story</div>
+      </a>
+    </div>
+
+  </main>
+
+  <footer>
+    <p class="footer-brand">Made with 💜 by <strong>Sahil, Ayushi, Sanchari &amp; Divyans</strong> · © 2026 Placida</p>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="breathe.html">Breathe</a></li>
+      <li><a href="relax.html">Relax</a></li>
+    </ul>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- SOS Button -->
+  <button class="sos-float-btn" onclick="openSOS()" aria-label="Open helplines" id="sosFloatBtn">
+    <span class="sos-icon">🆘</span> Need Help?
+  </button>
+  <div class="sos-modal" id="sosModal" role="dialog" aria-modal="true" aria-labelledby="sosModalTitle">
+    <div class="sos-dialog">
+      <button class="sos-close-btn" onclick="closeSOS()" aria-label="Close">✕</button>
+      <div class="sos-dialog-header"><div class="sos-dialog-icon">🆘</div><div><div class="sos-dialog-title" id="sosModalTitle">You are not alone.</div><div class="sos-dialog-subtitle">Free, confidential support — right now.</div></div></div>
+      <div class="sos-section-label">🏛️ Government Helplines</div>
+      <a href="tel:18005990019" class="sos-helpline priority"><div class="sos-helpline-emoji">📞</div><div class="sos-helpline-info"><div class="sos-helpline-name">KIRAN <span class="sos-priority-badge">Govt. of India</span></div><div class="sos-helpline-org">Ministry of Social Justice &amp; Empowerment</div><div class="sos-tags"><span class="sos-tag">Toll-Free</span><span class="sos-tag">24/7</span><span class="sos-tag">13 Languages</span></div></div><div class="sos-helpline-number">1800-599-0019</div></a>
+      <a href="tel:08046110007" class="sos-helpline priority"><div class="sos-helpline-emoji">🏥</div><div class="sos-helpline-info"><div class="sos-helpline-name">NIMHANS <span class="sos-priority-badge">Govt. of India</span></div><div class="sos-helpline-org">Nat. Institute of Mental Health &amp; Neuro Sciences</div><div class="sos-tags"><span class="sos-tag">Free</span></div></div><div class="sos-helpline-number">080-4611-0007</div></a>
+      <a href="tel:14416" class="sos-helpline priority"><div class="sos-helpline-emoji">🧠</div><div class="sos-helpline-info"><div class="sos-helpline-name">SNEHI Short Code <span class="sos-priority-badge">Govt.</span></div><div class="sos-helpline-org">National Mental Health Programme</div><div class="sos-tags"><span class="sos-tag">Toll-Free</span></div></div><div class="sos-helpline-number">14416</div></a>
+      <div class="sos-section-label">🌙 24×7 Crisis</div>
+      <a href="tel:9820466627" class="sos-helpline"><div class="sos-helpline-emoji">🕯️</div><div class="sos-helpline-info"><div class="sos-helpline-name">AASRA</div><div class="sos-helpline-org">Suicide prevention</div><div class="sos-tags"><span class="sos-tag">24/7</span></div></div><div class="sos-helpline-number">9820466627</div></a>
+      <a href="tel:9152987821" class="sos-helpline"><div class="sos-helpline-emoji">📱</div><div class="sos-helpline-info"><div class="sos-helpline-name">iCall — TISS</div><div class="sos-helpline-org">Tata Institute of Social Sciences</div><div class="sos-tags"><span class="sos-tag">Mon–Sat 8am–10pm</span></div></div><div class="sos-helpline-number">9152987821</div></a>
+      <p class="sos-modal-note">In immediate danger, call <strong>112</strong>.</p>
+    </div>
+  </div>
+
+  <script src="supabase.js"></script>
+  <script>document.addEventListener('supabase:ready',()=>{if(window.supabase)requireAuth();});</script>
+
+  <script>
+  // ── SOS ──
+  function openSOS(){document.getElementById('sosModal').classList.add('show');document.body.style.overflow='hidden';}
+  function closeSOS(){document.getElementById('sosModal').classList.remove('show');document.body.style.overflow='';}
+  document.getElementById('sosModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeSOS();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSOS();});
+
+  // ── Toast ──
+  function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+
+  // ════════════════════════════════════════
+  // BUBBLE POP — Sahil
+  // ════════════════════════════════════════
+  let popped=0,total=48;
+  function initBubbles(){
+    popped=0;
+    const g=document.getElementById('bubbleGrid');
+    g.innerHTML='';
+    for(let i=0;i<total;i++){
+      const b=document.createElement('button');
+      b.className='bubble intact';
+      b.setAttribute('aria-label','Pop bubble '+(i+1));
+      b.onclick=function(){
+        if(this.classList.contains('popped'))return;
+        this.classList.remove('intact');
+        this.classList.add('popped');
+        this.textContent='✨';
+        this.setAttribute('aria-label','Bubble popped');
+        popped++;
+        document.getElementById('bubbleScore').textContent=popped+' / '+total+' popped';
+        if(popped===total)showToast('🎉 All bubbles popped! Feeling better?');
+      };
+      g.appendChild(b);
+    }
+    document.getElementById('bubbleScore').textContent='0 / '+total+' popped';
+  }
+  initBubbles();
+
+  // ════════════════════════════════════════
+  // ZEN CANVAS — Sanchari
+  // ════════════════════════════════════════
+  (function(){
+    const canvas=document.getElementById('zenCanvas');
+    const ctx=canvas.getContext('2d');
+    const colors={
+      purple:['rgba(124,106,247,','rgba(155,106,247,'],
+      teal:  ['rgba(94,196,182,', 'rgba(70,210,200,'],
+      pink:  ['rgba(240,107,139,','rgba(255,130,160,'],
+      white: ['rgba(240,240,255,','rgba(200,200,255,']
+    };
+    let drawing=false,lastX=0,lastY=0,currentColor='purple',hue=0;
+
+    function resize(){
+      const w=canvas.offsetWidth;
+      const img=ctx.getImageData(0,0,canvas.width,canvas.height);
+      canvas.width=w; canvas.height=200;
+      ctx.putImageData(img,0,0);
+    }
+    resize();
+    window.addEventListener('resize',resize);
+
+    function getPos(e){
+      const r=canvas.getBoundingClientRect();
+      if(e.touches){return{x:e.touches[0].clientX-r.left,y:e.touches[0].clientY-r.top};}
+      return{x:e.clientX-r.left,y:e.clientY-r.top};
+    }
+
+    function draw(e){
+      if(!drawing)return;
+      e.preventDefault();
+      const {x,y}=getPos(e);
+      const c=colors[currentColor];
+      ctx.beginPath();
+      ctx.moveTo(lastX,lastY);
+      ctx.lineTo(x,y);
+      ctx.strokeStyle=c[0]+'0.85)';
+      ctx.shadowColor=c[1]+'0.5)';
+      ctx.shadowBlur=12;
+      ctx.lineWidth=4;
+      ctx.lineCap='round';
+      ctx.lineJoin='round';
+      ctx.stroke();
+      lastX=x; lastY=y;
+    }
+
+    canvas.addEventListener('mousedown',e=>{drawing=true;const p=getPos(e);lastX=p.x;lastY=p.y;});
+    canvas.addEventListener('mousemove',draw);
+    canvas.addEventListener('mouseup',()=>drawing=false);
+    canvas.addEventListener('mouseleave',()=>drawing=false);
+    canvas.addEventListener('touchstart',e=>{e.preventDefault();drawing=true;const p=getPos(e);lastX=p.x;lastY=p.y;},{passive:false});
+    canvas.addEventListener('touchmove',draw,{passive:false});
+    canvas.addEventListener('touchend',()=>drawing=false);
+
+    window.setZenColor=function(c){
+      currentColor=c;
+      document.querySelectorAll('.zc-btn').forEach(b=>b.classList.remove('active'));
+      document.getElementById('zc-'+c)?.classList.add('active');
+    };
+    window.clearZen=function(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      showToast('🎨 Canvas cleared — start fresh!');
+    };
+  })();
+
+  // ════════════════════════════════════════
+  // SOUND TILES — Ayushi
+  // ════════════════════════════════════════
+  (function(){
+    const AudioCtx=window.AudioContext||window.webkitAudioContext;
+    let actx=null;
+    const tiles=[
+      {emoji:'🌊',color:'rgba(94,196,182,.35)',freq:261.6,label:'Do'},
+      {emoji:'🌸',color:'rgba(240,107,139,.35)',freq:293.7,label:'Re'},
+      {emoji:'☁️', color:'rgba(124,106,247,.35)',freq:329.6,label:'Mi'},
+      {emoji:'🌙',color:'rgba(155,100,220,.35)',freq:349.2,label:'Fa'},
+      {emoji:'✨',color:'rgba(94,196,182,.28)',freq:392.0,label:'Sol'},
+      {emoji:'🍃',color:'rgba(90,210,120,.28)',freq:440.0,label:'La'},
+      {emoji:'🔮',color:'rgba(180,100,247,.28)',freq:493.9,label:'Si'},
+      {emoji:'🌈',color:'rgba(240,180,80,.28)', freq:523.3,label:'Do2'},
+    ];
+
+    function playTone(freq){
+      if(!actx){actx=new AudioCtx();}
+      const osc=actx.createOscillator();
+      const gain=actx.createGain();
+      osc.connect(gain); gain.connect(actx.destination);
+      osc.type='sine';
+      osc.frequency.value=freq;
+      gain.gain.setValueAtTime(.4,actx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(.001,actx.currentTime+1.2);
+      osc.start(); osc.stop(actx.currentTime+1.2);
+    }
+
+    const grid=document.getElementById('soundGrid');
+    tiles.forEach(t=>{
+      const btn=document.createElement('button');
+      btn.className='stile';
+      btn.style.background=t.color;
+      btn.textContent=t.emoji;
+      btn.setAttribute('aria-label','Play '+t.label+' tone');
+      btn.addEventListener('click',()=>{
+        playTone(t.freq);
+        btn.classList.add('lit');
+        document.getElementById('soundHint').textContent='🎵 '+t.label+' ('+Math.round(t.freq)+'Hz)';
+        setTimeout(()=>btn.classList.remove('lit'),300);
+      });
+      grid.appendChild(btn);
+    });
+  })();
+  </script>
+</body>
+</html>

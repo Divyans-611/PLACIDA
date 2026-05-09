@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Placida Insights — Your 30-day mood heatmap, best day analysis, and wellness analytics." />
+  <!-- OG / Social Sharing -->
+  <meta property="og:title" content="Insights — Placida" />
+  <meta property="og:description" content="Track your emotional wellness patterns with 30-day heatmaps and analytics." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bugbitcoder.github.io/PLACIDA/insights.html" />
+  <meta property="og:site_name" content="Placida" />
+  <meta name="twitter:card" content="summary" />
+  <title>Insights — Placida</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-512.png" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <style>
+    /* ── Insights Hero ── */
+    .insights-hero {
+      text-align: center;
+      padding: 52px 24px 28px;
+      animation: fadeInUp 0.7s ease both;
+    }
+    .insights-hero h1 {
+      font-size: clamp(1.9rem, 5vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -1.2px;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #f0f0ff 0%, var(--accent-purple) 55%, var(--accent-teal) 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 6s ease infinite;
+    }
+    .insights-hero p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 440px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── Layout ── */
+    .insights-layout {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      animation: fadeInUp 0.8s ease 0.1s both;
+    }
+
+    /* ── Stat Cards Row ── */
+    .insight-stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 680px) {
+      .insight-stats-row { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .insight-stat {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 18px;
+      padding: 22px 16px;
+      text-align: center;
+      backdrop-filter: blur(14px);
+      transition: all var(--transition);
+    }
+    .insight-stat:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-card), var(--shadow-glow);
+    }
+    .insight-stat .is-icon { font-size: 1.7rem; margin-bottom: 10px; }
+    .insight-stat .is-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent-purple);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .insight-stat .is-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+    }
+    .insight-stat .is-sub {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* ── Insight Card wrapper ── */
+    .insight-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 22px;
+      padding: 28px 28px;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow-card);
+    }
+    .insight-card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .ic-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, rgba(124,106,247,0.28), rgba(94,196,182,0.18));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .ic-title  { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
+    .ic-sub    { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
+    /* ── 30-Day Heatmap ── */
+    .heatmap-legend {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px 12px;
+      margin-bottom: 18px;
+    }
+    .heatmap-legend span { font-size: 0.7rem; color: var(--text-muted); }
+    .legend-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    #moodHeatmap {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 7px;
+    }
+    @media (max-width: 520px) {
+      #moodHeatmap { grid-template-columns: repeat(6, 1fr); }
+    }
+    .heat-cell {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: default;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .heat-cell:hover {
+      transform: scale(1.18);
+      z-index: 2;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    }
+    .heat-date  { font-size: 0.58rem; color: rgba(255,255,255,0.55); font-weight: 600; line-height: 1; }
+    .heat-score { font-size: 0.72rem; line-height: 1; margin-top: 1px; }
+
+    /* ── Weekday Bar Chart ── */
+    #weekdayBars {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+      height: 140px;
+    }
+    .wday-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+    }
+    .wday-bar-wrap {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      background: rgba(255,255,255,0.03);
+      border-radius: 8px 8px 0 0;
+      overflow: hidden;
+    }
+    .wday-bar {
+      width: 100%;
+      border-radius: 8px 8px 0 0;
+      transition: height 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+      min-height: 3px;
+    }
+    .wday-label { font-size: 0.68rem; color: var(--text-muted); margin-top: 7px; font-weight: 600; }
+    .wday-avg   { font-size: 0.62rem; color: var(--text-muted); margin-top: 2px; }
+
+    /* ── Time of Day Grid ── */
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 520px) {
+      .time-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .time-cell {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-glass);
+      border-radius: 16px;
+      padding: 18px 12px;
+      text-align: center;
+      transition: all var(--transition);
+    }
+    .time-cell.best {
+      background: linear-gradient(135deg, rgba(124,106,247,0.18), rgba(94,196,182,0.1));
+      border-color: rgba(124,106,247,0.38);
+      box-shadow: 0 0 24px rgba(124,106,247,0.1);
+    }
+    .tc-icon   { font-size: 1.6rem; margin-bottom: 8px; }
+    .tc-label  { font-size: 0.75rem; font-weight: 700; color: var(--text-primary); }
+    .tc-avg    { font-size: 0.7rem; color: var(--text-muted); margin-top: 5px; }
+    .best-badge {
+      display: inline-block;
+      font-size: 0.58rem;
+      background: rgba(124,106,247,0.28);
+      color: #a89df9;
+      padding: 3px 9px;
+      border-radius: 100px;
+      margin-top: 6px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── Empty state for no data ── */
+    .insights-no-data {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-muted);
+      display: none;
+    }
+    .insights-no-data .nd-emoji { font-size: 3rem; margin-bottom: 14px; }
+    .insights-no-data h3 { color: var(--text-primary); margin-bottom: 8px; font-size: 1.05rem; }
+    .insights-no-data p  { font-size: 0.85rem; line-height: 1.6; max-width: 300px; margin: 0 auto 22px; }
+
+    /* ── CTA row ── */
+    .insights-cta {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding: 0 20px;
+      max-width: 460px;
+      margin: 4px auto 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo" aria-label="Placida home">
+      <div class="logo-icon" aria-hidden="true">🧠</div>
+      <span class="logo-text">Placida</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="breathe.html">Breathe</a></li>
+      <li><a href="chatbot.html">Chat</a></li>
+      <li><a href="insights.html" class="active" aria-current="page">Insights</a></li>
+      <li><a href="relax.html">Relax</a></li>
+      <li><a href="feedback.html">Feedback</a></li>
+    </ul>
+    <button class="btn-logout" onclick="signOut()" aria-label="Logout" title="Sign out">⏻ Logout</button>
+  </nav>
+
+  <main class="page-wrapper">
+
+    <!-- Hero -->
+    <section class="insights-hero" aria-labelledby="insights-title">
+      <div class="hero-badge">📊 Analytics</div>
+      <h1 id="insights-title">Your 30-Day<br>Mood Insights</h1>
+      <p>Deep patterns from your emotional journey — understand what lifts you up and what brings you down.</p>
+    </section>
+
+    <div class="insights-layout">
+
+      <!-- ── Stat Cards ── -->
+      <div class="insight-stats-row" aria-label="Summary statistics">
+        <div class="insight-stat" aria-label="Total entries in last 30 days">
+          <div class="is-icon">📝</div>
+          <div class="is-value stat-accent" id="insightTotal">—</div>
+          <div class="is-label">30-Day Entries</div>
+          <div class="is-sub">moods logged</div>
+        </div>
+        <div class="insight-stat" aria-label="Overall average mood">
+          <div class="is-icon">🌟</div>
+          <div class="is-value" id="insightOverallAvg" style="color:var(--accent-teal)">—</div>
+          <div class="is-label">Overall Avg</div>
+          <div class="is-sub">all-time score / 5</div>
+        </div>
+        <div class="insight-stat" aria-label="Best day ever">
+          <div class="is-icon">🏆</div>
+          <div class="is-value" id="insightBestDay"
+               style="font-size:0.88rem; padding-top:6px; line-height:1.3; color:var(--accent-pink)">—</div>
+          <div class="is-label">Best Day Ever</div>
+          <div class="is-sub">highest avg score</div>
+        </div>
+        <div class="insight-stat" aria-label="Happiest time of day">
+          <div class="is-icon">⏰</div>
+          <div class="is-value" id="insightHappiestTime"
+               style="font-size:0.88rem; padding-top:6px; line-height:1.3">—</div>
+          <div class="is-label">Happiest Time</div>
+          <div class="is-sub">of day</div>
+        </div>
+      </div>
+
+      <!-- ── 30-Day Heatmap ── -->
+      <div class="insight-card" aria-label="30-day mood heatmap">
+        <div class="insight-card-header">
+          <div class="ic-icon">🗓️</div>
+          <div>
+            <div class="ic-title">30-Day Mood Heatmap</div>
+            <div class="ic-sub">Each square = one day · Hover for details · Brighter = better mood</div>
+          </div>
+        </div>
+
+        <div class="heatmap-legend" aria-hidden="true">
+          <span>No data</span>
+          <div class="legend-swatch" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1)"></div>
+          <div class="legend-swatch" style="background:rgba(240,107,139,0.82)"></div>
+          <span>Rough</span>
+          <div class="legend-swatch" style="background:rgba(240,107,139,0.45)"></div>
+          <span>Low</span>
+          <div class="legend-swatch" style="background:rgba(124,106,247,0.55)"></div>
+          <span>Okay</span>
+          <div class="legend-swatch" style="background:rgba(94,196,182,0.55)"></div>
+          <span>Good</span>
+          <div class="legend-swatch" style="background:rgba(94,196,182,0.90)"></div>
+          <span>Great</span>
+        </div>
+
+        <div id="moodHeatmap" role="img" aria-label="30-day mood visualization grid"></div>
+      </div>
+
+      <!-- ── Best Weekday Chart ── -->
+      <div class="insight-card" aria-label="Best day of week analysis">
+        <div class="insight-card-header">
+          <div class="ic-icon">📅</div>
+          <div>
+            <div class="ic-title">Best Day of the Week</div>
+            <div class="ic-sub">Average mood score per weekday — all-time data</div>
+          </div>
+        </div>
+        <div id="weekdayBars" aria-label="Weekday mood bar chart" role="img"></div>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:18px; text-align:center;">
+          Your best day on average: &nbsp;<strong style="color:var(--accent-purple)" id="bestWeekday">—</strong>
+        </p>
+      </div>
+
+      <!-- ── Time of Day ── -->
+      <div class="insight-card" aria-label="Mood by time of day">
+        <div class="insight-card-header">
+          <div class="ic-icon">🕐</div>
+          <div>
+            <div class="ic-title">Mood by Time of Day</div>
+            <div class="ic-sub">When do you tend to feel your best?</div>
+          </div>
+        </div>
+        <div class="time-grid" id="timeGrid" aria-label="Time of day mood breakdown"></div>
+      </div>
+
+      <!-- ── CTA ── -->
+      <div class="insights-cta">
+        <a href="index.html" class="btn-primary"
+           style="text-decoration:none; display:inline-block; width:auto; padding:14px 32px;">
+          + Log Today's Mood
+        </a>
+        <a href="dashboard.html" class="btn-secondary"
+           style="text-decoration:none; display:inline-block; width:auto; padding:14px 32px;">
+          View Dashboard
+        </a>
+      </div>
+
+    </div><!-- /insights-layout -->
+
+
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p class="footer-brand">Made with 💜 by <strong>Sahil, Ayushi, Sanchari &amp; Divyans</strong> · © 2026 Placida</p>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="chatbot.html">Chat</a></li>
+    </ul>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Keyboard Shortcut Hint -->
+  <div id="shortcutHint" class="shortcut-hint" title="Keyboard Shortcuts" aria-label="Show keyboard shortcuts">?</div>
+  <div id="shortcutPanel" class="shortcut-panel" aria-hidden="true">
+    <div class="sp-title">⌨️ Shortcuts</div>
+    <div class="sp-row"><kbd>M</kbd><span>Log Mood</span></div>
+    <div class="sp-row"><kbd>B</kbd><span>Breathe</span></div>
+    <div class="sp-row"><kbd>C</kbd><span>Chat</span></div>
+    <div class="sp-row"><kbd>D</kbd><span>Dashboard</span></div>
+    <div class="sp-row"><kbd>I</kbd><span>Insights</span></div>
+    <div class="sp-row"><kbd>S</kbd><span>Summary</span></div>
+  </div>
+
+  <!-- SOS Floating Button -->
+  <button class="sos-float-btn" onclick="openSOS()" aria-label="Open mental health helplines" id="sosFloatBtn">
+    <span class="sos-icon">🆘</span> Need Help?
+  </button>
+  <!-- SOS Modal -->
+  <div class="sos-modal" id="sosModal" role="dialog" aria-modal="true" aria-labelledby="sosModalTitle">
+    <div class="sos-dialog">
+      <button class="sos-close-btn" onclick="closeSOS()" aria-label="Close">✕</button>
+      <div class="sos-dialog-header"><div class="sos-dialog-icon">🆘</div><div><div class="sos-dialog-title" id="sosModalTitle">You are not alone.</div><div class="sos-dialog-subtitle">Free, confidential mental health support — right now.</div></div></div>
+      <div class="sos-section-label">🏛️ Government Helplines — Free &amp; Official</div>
+      <a href="tel:18005990019" class="sos-helpline priority"><div class="sos-helpline-emoji">📞</div><div class="sos-helpline-info"><div class="sos-helpline-name">KIRAN <span class="sos-priority-badge">Govt. of India</span></div><div class="sos-helpline-org">Ministry of Social Justice &amp; Empowerment</div><div class="sos-tags"><span class="sos-tag">Toll-Free</span><span class="sos-tag">24/7</span><span class="sos-tag">13 Languages</span></div></div><div class="sos-helpline-number">1800-599-0019</div></a>
+      <a href="tel:08046110007" class="sos-helpline priority"><div class="sos-helpline-emoji">🏥</div><div class="sos-helpline-info"><div class="sos-helpline-name">NIMHANS <span class="sos-priority-badge">Govt. of India</span></div><div class="sos-helpline-org">Nat. Institute of Mental Health &amp; Neuro Sciences</div><div class="sos-tags"><span class="sos-tag">Free</span><span class="sos-tag">Expert Support</span></div></div><div class="sos-helpline-number">080-4611-0007</div></a>
+      <a href="tel:14416" class="sos-helpline priority"><div class="sos-helpline-emoji">🧠</div><div class="sos-helpline-info"><div class="sos-helpline-name">SNEHI Short Code <span class="sos-priority-badge">Govt.</span></div><div class="sos-helpline-org">National Mental Health Programme</div><div class="sos-tags"><span class="sos-tag">Toll-Free</span></div></div><div class="sos-helpline-number">14416</div></a>
+      <div class="sos-section-label">🎓 Academic</div>
+      <a href="tel:9152987821" class="sos-helpline"><div class="sos-helpline-emoji">📱</div><div class="sos-helpline-info"><div class="sos-helpline-name">iCall — TISS</div><div class="sos-helpline-org">Tata Institute of Social Sciences</div><div class="sos-tags"><span class="sos-tag">Mon–Sat 8am–10pm</span></div></div><div class="sos-helpline-number">9152987821</div></a>
+      <div class="sos-section-label">🌙 24×7 Crisis Lines</div>
+      <a href="tel:9820466627" class="sos-helpline"><div class="sos-helpline-emoji">🕯️</div><div class="sos-helpline-info"><div class="sos-helpline-name">AASRA</div><div class="sos-helpline-org">Suicide prevention &amp; crisis intervention</div><div class="sos-tags"><span class="sos-tag">24/7</span></div></div><div class="sos-helpline-number">9820466627</div></a>
+      <a href="tel:18602662345" class="sos-helpline"><div class="sos-helpline-emoji">💙</div><div class="sos-helpline-info"><div class="sos-helpline-name">Vandrevala Foundation</div><div class="sos-helpline-org">Mental health helpline, all ages</div><div class="sos-tags"><span class="sos-tag">24/7</span><span class="sos-tag">Confidential</span></div></div><div class="sos-helpline-number">1860-2662-345</div></a>
+      <a href="tel:04424640050" class="sos-helpline"><div class="sos-helpline-emoji">🤝</div><div class="sos-helpline-info"><div class="sos-helpline-name">Snehi</div><div class="sos-helpline-org">Emotional support, Chennai</div><div class="sos-tags"><span class="sos-tag">Mon–Sat 8am–10pm</span></div></div><div class="sos-helpline-number">044-24640050</div></a>
+      <a href="tel:01123389090" class="sos-helpline"><div class="sos-helpline-emoji">☀️</div><div class="sos-helpline-info"><div class="sos-helpline-name">Sumaitri</div><div class="sos-helpline-org">Emotional support, Delhi</div><div class="sos-tags"><span class="sos-tag">Daily 2pm–10pm</span></div></div><div class="sos-helpline-number">011-23389090</div></a>
+      <p class="sos-modal-note">All calls are free and confidential. In immediate danger, call <strong>112</strong>.</p>
+    </div>
+  </div>
+  <script src="supabase.js"></script>
+  <script>document.addEventListener('supabase:ready', () => { if(window.supabase) requireAuth(); });</script>
+  <script src="script.js"></script>
+  <script>
+    function openSOS()  { document.getElementById('sosModal').classList.add('show'); document.body.style.overflow='hidden'; }
+    function closeSOS() { document.getElementById('sosModal').classList.remove('show'); document.body.style.overflow=''; }
+    document.getElementById('sosModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeSOS(); });
+    document.addEventListener('keydown', e => { if(e.key==='Escape') closeSOS(); });
+  </script>
+</body>
+</html>
