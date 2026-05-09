@@ -1011,4 +1011,271 @@ footer {
 }
 .of-item .of-icon { font-size: 1.5rem; margin-bottom: 6px; }
 .of-item .of-label { font-size: 0.72rem; font-weight: 600; color: var(--text-soft); }
+
+/* ══════════════════════════════════════════════
+   WEEK 4 — Sahil additions (feedback.html)
+══════════════════════════════════════════════ */
+
+/* ── Feedback Hero ── */
+.feedback-hero {
+  text-align: center;
+  padding: 52px 24px 32px;
+  animation: fadeInUp 0.7s ease both;
+}
+.feedback-hero h1 {
+  font-size: clamp(1.9rem, 5vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -1.2px;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #f0f0ff 0%, var(--accent-purple) 55%, var(--accent-teal) 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 6s ease infinite;
+}
+.feedback-hero p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  max-width: 440px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Feedback Grid ── */
+.feedback-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+  animation: fadeInUp 0.8s ease 0.1s both;
+}
+@media (max-width: 700px) {
+  .feedback-grid { grid-template-columns: 1fr; }
+  .feedback-grid .col-span-2 { grid-column: 1; }
+}
+
+/* ── Feature Rating Row ── */
+.feature-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.feature-rating-row:last-child { border-bottom: none; }
+
+.feature-rating-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+.feature-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  width: 36px;
+  text-align: center;
+}
+.feature-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.feature-desc {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+/* ── Star Group ── */
+.star-group {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.star-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: rgba(255,255,255,0.15);
+  cursor: pointer;
+  padding: 2px;
+  line-height: 1;
+  transition: color 0.15s ease, transform 0.15s ease;
+  -webkit-text-fill-color: initial;
+}
+.star-btn:hover   { transform: scale(1.2); }
+.star-btn.star-hover  { color: rgba(124,106,247,0.6); }
+.star-btn.star-filled { color: var(--accent-purple); }
+.star-btn.star-active { color: var(--accent-purple); }
+
+.star-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  min-width: 64px;
+  text-align: right;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+.label-pop {
+  animation: labelPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes labelPop {
+  from { transform: scale(0.8); opacity: 0.5; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* ── NPS Section ── */
+.nps-section { margin-top: 8px; }
+
+.nps-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 12px 0 6px;
+}
+.nps-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--border-glass);
+  background: rgba(255,255,255,0.04);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+.nps-btn:hover {
+  background: rgba(124,106,247,0.12);
+  border-color: rgba(124,106,247,0.35);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+.nps-btn.nps-selected {
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-teal));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(124,106,247,0.4);
+  transform: translateY(-2px);
+}
+.nps-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+  padding: 0 2px;
+}
+
+/* ── Feedback Submit Buttons ── */
+.feedback-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.feedback-actions .btn-primary  { flex: 2; min-width: 140px; }
+.feedback-actions .btn-secondary { flex: 1; min-width: 120px; }
+
+/* ── Past Feedback List ── */
+.past-feedback-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.past-entry {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  padding: 16px 18px;
+  animation: fadeInUp 0.4s ease both;
+}
+.past-entry-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+.past-ratings-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.past-rating-chip {
+  font-size: 0.72rem;
+  background: rgba(124,106,247,0.12);
+  border: 1px solid rgba(124,106,247,0.2);
+  border-radius: 100px;
+  padding: 3px 10px;
+  color: var(--text-soft);
+  letter-spacing: 0.2px;
+}
+.past-text {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  line-height: 1.6;
+  margin-top: 6px;
+}
+.past-text-label {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-right: 4px;
+}
+
+/* ── Thank You Card ── */
+.thank-you-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  max-width: 480px;
+  margin: 0 auto 80px;
+  padding: 48px 32px;
+  background: linear-gradient(135deg, rgba(124,106,247,0.1), rgba(94,196,182,0.06));
+  border: 1px solid rgba(124,106,247,0.2);
+  border-radius: 28px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.thank-you-card.ty-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.ty-emoji {
+  font-size: 3.5rem;
+  animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes bounceIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+.thank-you-card h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+.thank-you-card p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 340px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 540px) {
+  .feature-rating-row  { flex-wrap: wrap; }
+  .star-label          { min-width: auto; text-align: left; }
+  .nps-btn             { width: 34px; height: 34px; font-size: 0.78rem; }
+}
 
