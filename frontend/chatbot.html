@@ -262,7 +262,9 @@
       <li><a href="breathe.html">Breathe</a></li>
       <li><a href="chatbot.html" class="active" aria-current="page">Chat</a></li>
       <li><a href="insights.html">Insights</a></li>
+      <li><a href="feedback.html">Feedback</a></li>
     </ul>
+    <button class="btn-logout" onclick="signOut()" aria-label="Logout" title="Sign out">⏻ Logout</button>
   </nav>
 
   <main class="page-wrapper" style="padding-bottom: 40px;">
@@ -307,7 +309,7 @@
       <!-- Disclaimer -->
       <p class="chat-disclaimer">
         💜 Placida is an AI companion, not a substitute for professional mental health care.<br>
-        If you're in crisis, please call <strong>iCall: 9152987821</strong> or <strong>Vandrevala: 1860-2662-345</strong>
+        In crisis? Click the <strong>🆘 Need Help?</strong> button (bottom-left) for free government helplines.
       </p>
 
     </div>
@@ -336,15 +338,42 @@
     <div class="sp-row"><kbd>S</kbd><span>Summary</span></div>
   </div>
 
+  <!-- SOS Floating Button -->
+  <button class="sos-float-btn" onclick="openSOS()" aria-label="Open mental health helplines" id="sosFloatBtn">
+    <span class="sos-icon">🆘</span> Need Help?
+  </button>
+  <!-- SOS Modal -->
+  <div class="sos-modal" id="sosModal" role="dialog" aria-modal="true" aria-labelledby="sosModalTitle">
+    <div class="sos-dialog">
+      <button class="sos-close-btn" onclick="closeSOS()" aria-label="Close">✕</button>
+      <div class="sos-dialog-header"><div class="sos-dialog-icon">🆘</div><div><div class="sos-dialog-title" id="sosModalTitle">You are not alone.</div><div class="sos-dialog-subtitle">Free, confidential mental health support — right now.</div></div></div>
+      <div class="sos-section-label">🏛️ Government Helplines — Free &amp; Official</div>
+      <a href="tel:18005990019" class="sos-helpline priority"><div class="sos-helpline-emoji">📞</div><div class="sos-helpline-info"><div class="sos-helpline-name">KIRAN <span class="sos-priority-badge">Govt. of India</span></div><div class="sos-helpline-org">Ministry of Social Justice &amp; Empowerment</div><div class="sos-tags"><span class="sos-tag">Toll-Free</span><span class="sos-tag">24/7</span><span class="sos-tag">13 Languages</span></div></div><div class="sos-helpline-number">1800-599-0019</div></a>
+      <a href="tel:08046110007" class="sos-helpline priority"><div class="sos-helpline-emoji">🏥</div><div class="sos-helpline-info"><div class="sos-helpline-name">NIMHANS <span class="sos-priority-badge">Govt. of India</span></div><div class="sos-helpline-org">Nat. Institute of Mental Health &amp; Neuro Sciences</div><div class="sos-tags"><span class="sos-tag">Free</span><span class="sos-tag">Expert Support</span></div></div><div class="sos-helpline-number">080-4611-0007</div></a>
+      <a href="tel:14416" class="sos-helpline priority"><div class="sos-helpline-emoji">🧠</div><div class="sos-helpline-info"><div class="sos-helpline-name">SNEHI Short Code <span class="sos-priority-badge">Govt.</span></div><div class="sos-helpline-org">National Mental Health Programme</div><div class="sos-tags"><span class="sos-tag">Toll-Free</span></div></div><div class="sos-helpline-number">14416</div></a>
+      <div class="sos-section-label">🎓 Academic</div>
+      <a href="tel:9152987821" class="sos-helpline"><div class="sos-helpline-emoji">📱</div><div class="sos-helpline-info"><div class="sos-helpline-name">iCall — TISS</div><div class="sos-helpline-org">Tata Institute of Social Sciences</div><div class="sos-tags"><span class="sos-tag">Mon–Sat 8am–10pm</span></div></div><div class="sos-helpline-number">9152987821</div></a>
+      <div class="sos-section-label">🌙 24×7 Crisis Lines</div>
+      <a href="tel:9820466627" class="sos-helpline"><div class="sos-helpline-emoji">🕯️</div><div class="sos-helpline-info"><div class="sos-helpline-name">AASRA</div><div class="sos-helpline-org">Suicide prevention &amp; crisis intervention</div><div class="sos-tags"><span class="sos-tag">24/7</span></div></div><div class="sos-helpline-number">9820466627</div></a>
+      <a href="tel:18602662345" class="sos-helpline"><div class="sos-helpline-emoji">💙</div><div class="sos-helpline-info"><div class="sos-helpline-name">Vandrevala Foundation</div><div class="sos-helpline-org">Mental health helpline, all ages</div><div class="sos-tags"><span class="sos-tag">24/7</span><span class="sos-tag">Confidential</span></div></div><div class="sos-helpline-number">1860-2662-345</div></a>
+      <a href="tel:04424640050" class="sos-helpline"><div class="sos-helpline-emoji">🤝</div><div class="sos-helpline-info"><div class="sos-helpline-name">Snehi</div><div class="sos-helpline-org">Emotional support, Chennai</div><div class="sos-tags"><span class="sos-tag">Mon–Sat 8am–10pm</span></div></div><div class="sos-helpline-number">044-24640050</div></a>
+      <a href="tel:01123389090" class="sos-helpline"><div class="sos-helpline-emoji">☀️</div><div class="sos-helpline-info"><div class="sos-helpline-name">Sumaitri</div><div class="sos-helpline-org">Emotional support, Delhi</div><div class="sos-tags"><span class="sos-tag">Daily 2pm–10pm</span></div></div><div class="sos-helpline-number">011-23389090</div></a>
+      <p class="sos-modal-note">All calls are free and confidential. In immediate danger, call <strong>112</strong>.</p>
+    </div>
+  </div>
   <script src="supabase.js"></script>
   <script src="features.js"></script>
-
   <script>
     function quickPrompt(text) {
       const input = document.getElementById('chatInput');
       if (input) { input.value = text; input.focus(); }
       sendMessage();
     }
+    function openSOS()  { document.getElementById('sosModal').classList.add('show'); document.body.style.overflow='hidden'; }
+    function closeSOS() { document.getElementById('sosModal').classList.remove('show'); document.body.style.overflow=''; }
+    document.getElementById('sosModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeSOS(); });
+    document.addEventListener('keydown', e => { if(e.key==='Escape') closeSOS(); });
   </script>
 </body>
-</html>
+</html>
+

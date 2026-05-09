@@ -1,12 +1,6 @@
-/* ============================================
-   PLACIDA — supabase.js
-   Supabase client initialisation
-   ⚠️  Replace the two placeholder values below
-       with your real project URL and anon key.
-       Get them from: supabase.com → Project Settings → API
-   ============================================ */
 
-const SUPABASE_URL  = 'https://snmfdktkjggsszziexsz.supabase.co';
+
+const SUPABASE_URL = 'https://snmfdktkjggsszziexsz.supabase.co';
 const SUPABASE_ANON = 'sb_publishable_ZspyU3qfMZwqYIfVtrA1-g_K9Vz_c9c';
 
 /* Load Supabase JS SDK from CDN then expose `supabase` globally */
@@ -21,8 +15,8 @@ const SUPABASE_ANON = 'sb_publishable_ZspyU3qfMZwqYIfVtrA1-g_K9Vz_c9c';
     return;
   }
 
-  const script  = document.createElement('script');
-  script.src    = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+  const script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
   script.onload = () => {
     window.supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
     document.dispatchEvent(new Event('supabase:ready'));
@@ -41,9 +35,9 @@ function withSupabase(cb) {
 }
 
 /* ─── Auth helpers ─── */
-async function getSession()  { return window.supabase?.auth.getSession();   }
-async function getUser()     { return window.supabase?.auth.getUser();       }
-async function signOut()     { await window.supabase?.auth.signOut(); window.location.href = 'auth.html'; }
+async function getSession() { return window.supabase?.auth.getSession(); }
+async function getUser() { return window.supabase?.auth.getUser(); }
+async function signOut() { await window.supabase?.auth.signOut(); window.location.href = 'auth.html'; }
 
 /* ─── Auth guard: call on every protected page ─── */
 function requireAuth() {
